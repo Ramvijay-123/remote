@@ -1,9 +1,23 @@
-// src/components/Home.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
+    const location = useLocation();
+    const query = new URLSearchParams(location.search);
+    const loggedIn = query.get('loggedIn') === 'true';
+
+    useEffect(() => {
+        if (loggedIn) {
+            toast.success('You have successfully logged in!');
+        }
+        else{
+            toast.success('You have successfully log out!');
+        }
+    }, [loggedIn]);
+
     return (
         <Container className="mt-5">
             <Row className="text-center">
@@ -36,6 +50,7 @@ const Home = () => {
                     </div>
                 </Col>
             </Row>
+            <ToastContainer /> {}
         </Container>
     );
 };

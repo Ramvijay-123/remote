@@ -1,8 +1,10 @@
-// src/components/Register.js
 import React, { useState } from 'react';
 import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
-import { registerUser } from '../apiService';
+import { registerUser, loginUser } from '../apiService';
+import { toast, ToastContainer } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -10,15 +12,31 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [roles, setRoles] = useState('ROLE_USER');
     const [message, setMessage] = useState('');
-
+    const navigate=useNavigate();
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await registerUser({ name, email, password, roles });
-            setMessage(response.message || 'Registration successful');
+            if (response!=null) {
+                const loginResponse = await loginUser({ username:name, password });
+                toast.success('Registration successful! Logging in...');
+                console.log(loginResponse);
+                if (loginResponse) {
+                    localStorage.setItem('token', loginResponse.token);
+                    localStorage.setItem('user_id', loginResponse.user_id);
+                    navigate('/?loggedIn=true'); 
+                } else {
+                    setMessage('Login failed: No token received');
+                    toast.error('Login failed: No token received');
+                }
+            } else {
+                setMessage(response.message || 'Registration failed');
+                toast.error(response.message || 'Registration failed');
+            }
         } catch (error) {
             console.error('Registration error:', error);
             setMessage('Registration failed');
+            toast.error('Registration failed');
         }
     };
 
@@ -70,7 +88,7 @@ const Register = () => {
                         </Form.Group>
                         <Button variant="primary" type="submit" className="w-100">Register</Button>
                     </Form>
-                    {message && <Alert variant={message.includes('failed') ? 'danger' : 'success'} className="mt-3">{message}</Alert>}
+                    <ToastContainer /> {}
                 </Col>
             </Row>
         </Container>
