@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import { registerUser, loginUser } from '../apiService';
 import { toast, ToastContainer } from 'react-toastify';
@@ -11,27 +11,33 @@ const Register = ({ setToken, setUserId }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [roles, setRoles] = useState('ROLE_USER');
+    const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             const response = await registerUser({ name, email, password, roles });
             if (response != null) {
+            
                 const loginResponse = await loginUser({ username: name, password });
                 toast.success('Registration successful! Logging in...');
                 if (loginResponse) {
                     setToken(loginResponse.token);
                     setUserId(loginResponse.user_id);
+                    setLoading(false);
                     navigate('/');
                 } else {
                     setMessage('Login failed: No token received');
                     toast.error('Login failed: No token received');
+                    setLoading(false);
                 }
             } else {
                 setMessage(response.message || 'Registration failed');
                 toast.error(response.message || 'Registration failed');
+                setLoading(false);
             }
         } catch (error) {
             console.error('Registration error:', error);
@@ -91,7 +97,7 @@ const Register = ({ setToken, setUserId }) => {
                                 <option value="ROLE_MANAGER">Manager</option>
                             </Form.Select>
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-3 mt-2">Register</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-3 mt-2">{loading===false?"Register":<Spinner></Spinner>}</Button>
                     </Form>
                     <ToastContainer/>
                 </Col>

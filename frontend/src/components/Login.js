@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Alert, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Alert, Container, Row, Col, Spinner } from 'react-bootstrap';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { loginUser } from '../apiService';
 import { useNavigate } from 'react-router-dom';
@@ -9,24 +9,29 @@ const Login = ({ setToken, setUserId, showToast }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
+            setLoading(true);
             const response = await loginUser({ username: email, password });
             if (response && response.token) {
                 setToken(response.token);
                 setUserId(response.user_id);
                 showToast('Login successful!', 'success');
+                setLoading(false);
                 navigate('/');
             } else {
                 setMessage('Login failed: No token received');
                 showToast('Login failed: No token received', 'error');
+                setLoading(false);
             }
         } catch (error) {
             setMessage('Login failed');
             toast.error("error in the login");
+            setLoading(false);
         }
     };
 
@@ -59,7 +64,7 @@ const Login = ({ setToken, setUserId, showToast }) => {
                                 className="form-control-lg"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-4">Login</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-4">{loading===false?"Login":<Spinner></Spinner>}</Button>
                     </Form>
                     {message && (
                         <Alert variant={message.includes('failed') ? 'danger' : 'success'} className="mt-3">
