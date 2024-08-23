@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "https://remote-theta.vercel.app/")
+@CrossOrigin(origins = "https://remote-theta.vercel.app")
 @RequestMapping("/tasks")
 public class TaskController {
     @Autowired
