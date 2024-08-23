@@ -9,7 +9,7 @@ import com.service.ProjectService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "https://remote-theta.vercel.app/")
 @RequestMapping("/projects")
 public class ProjectController {
 
