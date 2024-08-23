@@ -31,7 +31,7 @@ const Login = ({ setToken, setUserId, showToast }) => {
     };
 
     return (
-        <div className='vh-100'>
+        <div className='vh-100 w-50'>
             <Container className="mt-5 pt-5 border rounded border-light shadow-sm pl-4 pr-4 mr-md-5" style={{ backgroundColor: '#fff', maxWidth: '400px' }}>
             <Row className="justify-content-center">
                 <Col>

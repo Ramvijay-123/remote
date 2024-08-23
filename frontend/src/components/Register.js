@@ -41,7 +41,7 @@ const Register = ({ setToken, setUserId }) => {
     };
 
     return (
-        <div className='vh-100'>
+        <div className='vh-100 w-50'>
            <Container className="mt-4 border rounded border-light shadow-sm " style={{ backgroundColor: '#fff', maxWidth: '400px' }}>
             <Row className="justify-content-center">
                 <Col>
