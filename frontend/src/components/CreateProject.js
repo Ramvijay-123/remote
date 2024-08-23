@@ -6,6 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import '../App.css'; // Import the CSS file
 
 const CreateProject = ({ token, userId }) => {
     const [name, setName] = useState('');
@@ -23,67 +24,69 @@ const CreateProject = ({ token, userId }) => {
     };
 
     return (
-        <Container className="mt-5">
-            <Row className="justify-content-center">
-                <Col md={8} lg={6}>
-                    <Card className="shadow-lg">
-                        <Card.Body>
-                            <div className="text-center mb-4">
-                                <h2 className="form-title">Create Project</h2>
-                                <p className="text-muted">Fill in the details to start a new project</p>
-                            </div>
-                            <Form onSubmit={handleSubmit}>
-                                <Form.Group className="mb-3">
-                                    <Form.Label><FaProjectDiagram className="me-2" /> Project Name</Form.Label>
-                                    <Form.Control 
-                                        type="text" 
-                                        placeholder="Enter project name" 
-                                        value={name} 
-                                        onChange={(e) => setName(e.target.value)} 
-                                        required 
-                                        className="form-control-lg"
-                                        style={{ borderRadius: '0.25rem', boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' }}
-                                    />
-                                </Form.Group>
-                                <Form.Group className="mb-3">
-                                    <Form.Label><FaRegEdit className="me-2" /> Description</Form.Label>
-                                    <ReactQuill 
-                                        value={description} 
-                                        onChange={setDescription} 
-                                        placeholder="Enter project description, you can add links, bold text, etc."
-                                        theme="snow"
-                                        className="quill-editor"
-                                        modules={{
-                                            toolbar: [
-                                                [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-                                                [{size: []}],
-                                                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-                                                [{'list': 'ordered'}, {'list': 'bullet'}],
-                                                ['link', 'image', 'video'],
-                                                ['clean']                                         
-                                            ],
-                                        }}
-                                        formats={[
-                                            'header', 'font', 'size',
-                                            'bold', 'italic', 'underline', 'strike', 'blockquote',
-                                            'list', 'bullet',
-                                            'link', 'image', 'video'
-                                        ]}
-                                        style={{ borderRadius: '0.25rem', borderColor: '#ced4da' }}
-                                    />
-                                </Form.Group>
+        <div className="custom-bg">
+            <Container className="mt-2 pt-10 text-white">
+                <Row className="justify-content-center">
+                    <Col md={8} lg={6}>
+                        <Card className="shadow-lg">
+                            <Card.Body className='parent1'>
+                                <div className="text-center mb-4">
+                                    <h2 className="form-title font-weight-bold">Create Project</h2>
+                                    <p className="text-muted">Fill in the details to start a new project</p>
+                                </div>
+                                <Form onSubmit={handleSubmit}>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label><FaProjectDiagram className="me-2" /> Project Name</Form.Label>
+                                        <Form.Control 
+                                            type="text" 
+                                            placeholder="Enter project name" 
+                                            value={name} 
+                                            onChange={(e) => setName(e.target.value)} 
+                                            required 
+                                            className="form-control-lg"
+                                            style={{ borderRadius: '0.25rem', boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' }}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group className="mb-3">
+                                        <Form.Label><FaRegEdit className="me-2" /> Description</Form.Label>
+                                        <ReactQuill 
+                                            value={description} 
+                                            onChange={setDescription} 
+                                            placeholder="Enter project description, you can add links, bold text, etc."
+                                            theme="snow"
+                                            className="quill-editor bg-white"
+                                            modules={{
+                                                toolbar: [
+                                                    [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                                                    [{size: []}],
+                                                    ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                                                    [{'list': 'ordered'}, {'list': 'bullet'}],
+                                                    ['link', 'image', 'video'],
+                                                    ['clean']                                         
+                                                ],
+                                            }}
+                                            formats={[
+                                                'header', 'font', 'size',
+                                                'bold', 'italic', 'underline', 'strike', 'blockquote',
+                                                'list', 'bullet',
+                                                'link', 'image', 'video'
+                                            ]}
+                                            style={{ borderRadius: '0.25rem', borderColor: '#ced4da' }}
+                                        />
+                                    </Form.Group>
 
-                                <Button variant="primary" type="submit" className="btn-lg w-100" style={{ borderRadius: '0.25rem' }}>
-                                    Create Project
-                                </Button>
-                            </Form>
-                            { /* Toast container to display notifications */ }
-                            <ToastContainer />
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-        </Container>
+                                    <Button  type="submit" className="btn-lg w-100 " style={{ borderRadius: '0.25rem',backgroundColor:'#FB6542' }}>
+                                        Create Project
+                                    </Button>
+                                </Form>
+                                { /* Toast container to display notifications */ }
+                                <ToastContainer />
+                            </Card.Body>
+                        </Card>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 };
 

@@ -6,10 +6,10 @@ import { FaTasks } from 'react-icons/fa';
 
 const ViewTasks = ({ token, userId, projectId }) => {
     const [tasks, setTasks] = useState([]);
-    const [filteredTasks, setFilteredTasks] = useState([]); // Filtered task list
-    const [expandedTaskIds, setExpandedTaskIds] = useState([]); // Track expanded tasks
+    const [filteredTasks, setFilteredTasks] = useState([]);
+    const [expandedTaskIds, setExpandedTaskIds] = useState([]); 
     const [message, setMessage] = useState('');
-    const [filter, setFilter] = useState('all'); // Task filter ('all', 'pending', 'completed', 'incomplete')
+    const [filter, setFilter] = useState('all');
 
     useEffect(() => {
         const fetchTasks = async () => {
@@ -20,8 +20,6 @@ const ViewTasks = ({ token, userId, projectId }) => {
                 } else if (projectId) {
                     response = await getTasksByProject(projectId, token);
                 }
-
-                // Update tasks based on current date
                 const now = new Date();
                 const updatedTasks = response.map(task => {
                     const dueDate = new Date(task.dueDate);
@@ -41,7 +39,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
     }, [token, userId, projectId]);
 
     useEffect(() => {
-        // Filter tasks based on the selected filter
+    
         if (filter === 'completed') {
             setFilteredTasks(tasks.filter(task => task.status === 'Completed'));
         } else if (filter === 'incomplete') {
@@ -49,7 +47,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
         } else if (filter === 'pending') {
             setFilteredTasks(tasks.filter(task => task.status === 'Pending'));
         } else {
-            setFilteredTasks(tasks); // 'all' case
+            setFilteredTasks(tasks);
         }
     }, [filter, tasks]);
 
@@ -62,13 +60,14 @@ const ViewTasks = ({ token, userId, projectId }) => {
     };
 
     return (
-        <Container className="mt-4">
+        <div className='mh-100 '>
+        <Container className="mt-4 vh-100">
             <h2 className="mb-4 text-center"><FaTasks /> View Tasks</h2>
             {message && <Alert variant="danger"><BsExclamationTriangle /> {message}</Alert>}
 
             {/* Button Group for filtering tasks */}
-            <ButtonGroup className="mb-4 d-flex justify-content-center">
-                <Button variant={filter === 'all' ? 'primary' : 'outline-primary'} onClick={() => setFilter('all')}>
+            <ButtonGroup className="mb-4  d-flex justify-content-center">
+                <Button variant={filter === 'all' ? 'primary' : 'outline-primary'} onClick={() => setFilter('all')} className='mr-2'>
                     All Tasks
                 </Button>
                 <Button variant={filter === 'pending' ? 'primary' : 'outline-warning'} onClick={() => setFilter('pending')}>
@@ -135,6 +134,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
                 )}
             </Row>
         </Container>
+        </div>
     );
 };
 

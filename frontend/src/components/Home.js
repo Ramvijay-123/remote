@@ -1,57 +1,69 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Button, Row, Col } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import { Link } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Home = () => {
-    const location = useLocation();
-    const query = new URLSearchParams(location.search);
-    const loggedIn = query.get('loggedIn') === 'true';
+    const [displayedText, setDisplayedText] = useState('');
+    const fullText = "Welcome to the Project Management App";
 
     useEffect(() => {
-        if (loggedIn) {
-            toast.success('You have successfully logged in!');
-        }
-        else{
-            toast.success('You have successfully log out!');
-        }
-    }, [loggedIn]);
+        let currentText = '';
+        let index = 0;
+        
+        const type = () => {
+            if (index < fullText.length) {
+                currentText += fullText[index];
+                setDisplayedText(currentText);
+                index++;
+                setTimeout(type, 200); // Adjust typing speed here
+            }
+        };
+
+        setTimeout(type, 150); // Delay before typing starts
+
+    }, []);
 
     return (
+        <div className='vh-100'>
         <Container className="mt-5">
             <Row className="text-center">
                 <Col>
-                    <h1 className="mb-4" style={{ fontSize: '2.5rem', color: '#007bff' }}>
-                        Welcome to the Project Management App
+                    <h1 style={{ fontSize: '2.5rem', color: '#000' }}>
+                        {displayedText}
                     </h1>
-                    <p className="lead" style={{ fontSize: '1.2rem', color: '#6c757d' }}>
-                        This is a platform where you can manage projects, assign tasks, and view your tasks efficiently.
+                    <p className="lead" style={{ fontSize: '1.2rem', color: '#343a40'}}>
+                        Manage projects, assign tasks, and view your tasks efficiently on this platform.
                     </p>
-                    <p className="mb-4" style={{ fontSize: '1rem', color: '#6c757d' }}>
+                    <p className="mb-4" style={{ fontSize: '1rem', color: '#343a40'}}>
                         To get started, please register or log in to access the full features of the application.
                     </p>
                     <div className="mt-4">
-                        <Button 
-                            variant="primary" 
-                            as={Link} 
-                            to="/register" 
-                            style={{ marginRight: '10px' }}
+                        <Button
+                            variant=""
+                            as={Link}
+                            to="/register"
+                            className='btn btn-warning'
+                            style={{ marginRight: '10px', backgroundColor: '', borderColor: '#000', color:'#000' }}
                         >
                             Register
                         </Button>
-                        <Button 
-                            variant="secondary" 
-                            as={Link} 
+                        <Button
+                           variant=''
+                            className='btn btn-outline-warning'
+                            as={Link}
                             to="/login"
+                            style={{ color: '#000' }}
                         >
                             Login
                         </Button>
                     </div>
                 </Col>
             </Row>
-            <ToastContainer /> {}
+            <ToastContainer />
         </Container>
+        </div>
     );
 };
 

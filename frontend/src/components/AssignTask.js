@@ -85,7 +85,7 @@ const AssignTask = ({ token }) => {
     return (
         <Container className="mt-5">
             <Row className="justify-content-center">
-                <Col md={6} className="shadow-lg p-4">
+                <Col md={6} className="shadow-lg p-4 parent1">
                     <div className="text-center mb-4">
                         <h2>Assign Task</h2>
                     </div>
@@ -103,6 +103,7 @@ const AssignTask = ({ token }) => {
                         <Form.Group className="mb-3">
                             <Form.Label><FaRegEdit /> Description</Form.Label>
                             <ReactQuill 
+                            className='bg-white'
                                 value={description} 
                                 onChange={setDescription} 
                                 placeholder="Description" 

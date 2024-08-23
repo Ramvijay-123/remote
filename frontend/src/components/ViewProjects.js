@@ -47,11 +47,11 @@ const ViewProjects = ({ token, userId }) => {
     };
 
     return (
-        <Container className="mt-4">
-            <h2 className="mb-4">My Projects</h2>
+        <Container className="mt-4 vh-100">
+            <h2 className="mb-4 text-bold">My Projects</h2>
             {showTasksForProject !== null && (
                 <Button
-                    variant="secondary"
+                    variant="warning"
                     onClick={() => setShowTasksForProject(null)}
                     className="mb-3"
                 >
@@ -79,7 +79,7 @@ const ViewProjects = ({ token, userId }) => {
                                 </td>
                                 <td>
                                     <Button 
-                                        variant={showTasksForProject === project.id ? 'danger' : 'primary'} 
+                                        variant={showTasksForProject === project.id ? 'danger' : 'warning'} 
                                         onClick={() => handleProjectClick(project.id)}
                                     >
                                         {showTasksForProject === project.id ? (

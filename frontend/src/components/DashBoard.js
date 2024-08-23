@@ -20,9 +20,7 @@ const Dashboard = ({ token, userId }) => {
                 const tasks = await getTaskCounts(token, userId);
                 const projects = await getProjectCount(token, userId);
                 const user = await getUserDetails(token, userId);
-
                 setTaskCounts(tasks);
-                console.log(tasks);
                 setProjectCount(projects);
                 setUserDetails(user);
             } catch (error) {

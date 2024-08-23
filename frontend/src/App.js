@@ -1,7 +1,8 @@
+// src/App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Button, Alert } from 'react-bootstrap';
-import { FaPlus } from 'react-icons/fa'; // Importing an icon from react-icons
+import { FaPlus } from 'react-icons/fa'; 
 import Register from './components/Register';
 import Login from './components/Login';
 import CreateProject from './components/CreateProject';
@@ -9,17 +10,21 @@ import AssignTask from './components/AssignTask';
 import ViewTasks from './components/ViewTasks';
 import Home from './components/Home';
 import ViewProjects from './components/ViewProjects';
-import './App.css';
 import Dashboard from './components/DashBoard';
+import { ToastContainer, toast } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import Footer from './components/Footer';
+import InfoPage from './components/InfoPage';
 
 const App = () => {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
     const [userId, setUserId] = useState(localStorage.getItem('userId') || null);
     const [projectId, setProjectId] = useState(null);
-    const userName = "User"; // Placeholder for user name
+    const userName = "User"; 
 
     useEffect(() => {
-        // Store token in localStorage whenever it changes
         if (token) {
             localStorage.setItem('token', token);
         } else {
@@ -28,7 +33,6 @@ const App = () => {
     }, [token]);
 
     useEffect(() => {
-        // Store userId in localStorage whenever it changes
         if (userId) {
             localStorage.setItem('userId', userId);
         } else {
@@ -39,14 +43,20 @@ const App = () => {
     const handleLogout = () => {
         setToken('');
         setUserId(null);
+        toast.success("Logout successfully");
+      
+    };
+
+    const showToast = (message, type) => {
+        toast.success(message);
     };
 
     return (
         <Router>
-            <div>
-                <Navbar bg="dark" variant="dark" className="custom-navbar">
-                    <Container>
-                        <Navbar.Brand as={Link} to="/">Home</Navbar.Brand>
+            <div className='parent mh-100'>
+                <Navbar variant="secondary" className="custom-navbar  shadow p-3 mb-3 rounded text-muted border border-light  d-flex justify-content-center bg-zinc-800 app-navbar ">
+                    <Container className='app-navbar'>
+                        <Navbar.Brand as={Link} to="/" className='font-weight-bold'>RemoteTeam</Navbar.Brand>
                         <Nav className="me-auto">
                             {token ? (
                                 <>
@@ -54,6 +64,7 @@ const App = () => {
                                     <Nav.Link as={Link} to="/create-project">Create Project</Nav.Link>
                                     <Nav.Link as={Link} to="/assign-task">Assign Task</Nav.Link>
                                     <Nav.Link as={Link} to="/view-tasks">View Tasks</Nav.Link>
+                                    <Nav.Link as={Link} to="/dashboard">View DashBoard</Nav.Link>
                                 </>
                             ) : (
                                 <>
@@ -65,14 +76,13 @@ const App = () => {
                             {token && (
                                 <>
                                     <Button 
-                                        variant="outline-light" 
-                                        className="me-2" 
+                                        className="me-4  btn btn btn-warning" 
                                         onClick={handleLogout}
                                     >
                                         Logout
                                     </Button>
                                     <Button 
-                                        variant="primary" 
+                                        className='btn btn btn-warning' 
                                         as={Link} 
                                         to="/create-project"
                                     >
@@ -84,10 +94,11 @@ const App = () => {
                     </Container>
                 </Navbar>
 
-                <Container className="mt-4">
+                <Container className="mt-1 parent wh-100 d-flex justify-content-center ">
                     <Routes>
                         <Route path="/" element={token ? (
-                            <div>
+                            <div >
+                                <div className='d-flex flex-column justify-content-center align-items-center'>
                                 <h2>Welcome, {userName}!</h2>
                                 <p>This is your dashboard where you can manage projects and tasks.</p>
                                 <Alert variant="info" className="custom-alert">
@@ -99,12 +110,17 @@ const App = () => {
                                         <li><strong>View all tasks and project details:</strong> Get a comprehensive view of all tasks and project details in one place.</li>
                                     </ul>
                                 </Alert>
+                                </div>
+                               <InfoPage></InfoPage>
+                                <Footer/>
                             </div>
                         ) : (
                             <Home />
+                           
                         )} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/login" element={<Login setToken={setToken} setUserId={setUserId} />} />
+                        
+                        <Route path="/register" element={<Register setToken={setToken} setUserId={setUserId} />} />
+                        <Route path="/login" element={<Login setToken={setToken} setUserId={setUserId} showToast={showToast} />} />
                         <Route path="/create-project" element={token ? <CreateProject token={token} userId={userId}/> : <Navigate to="/login" />} />
                         <Route path="/assign-task" element={token ? <AssignTask token={token} /> : <Navigate to="/login" />} />
                         <Route path="/view-tasks" element={token ? <ViewTasks token={token} userId={userId} projectId={projectId} /> : <Navigate to="/login" />} />
@@ -112,7 +128,9 @@ const App = () => {
                         <Route path="/dashboard" element={token ? <Dashboard token={token} userId={userId} /> : <Navigate to="/login" />} />
                     </Routes>
                 </Container>
+              
             </div>
+            <ToastContainer />
         </Router>
     );
 };
