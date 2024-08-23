@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: large;
 }
 
 .App-logo {
@@ -35,4 +37,45 @@
   to {
     transform: rotate(360deg);
   }
+}
+.app-navbar{
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  color: white;
+  display: flex;
+  align-items: center;
+  background-color:#997cdc ;
+}
+.parent{
+  background-color:#997cdc ;
+
+}
+.parent1{
+  background-color: #D3C5E5;
+}
+.button-hormonious{
+  background-color: #F98866;
+}
+
+
+.custom-bg {
+ 
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.custom-bg .card {
+  background-color: #997cdc;
+}
+
+
+
+.custom-bg .form-control,
+.custom-bg .quill-editor,.ql-container,.ql.snow {
+  border-color: white;
+  color: black; 
+}
+
+.custom-bg .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
 }
