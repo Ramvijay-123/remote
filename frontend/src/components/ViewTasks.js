@@ -87,7 +87,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
                         <Col key={task.id} md={4} className="mb-3">
                             <Card className="shadow-sm border-0">
                                 <Card.Body>
-                                    <Card.Title className="d-flex justify-content-between align-items-center">
+                                    <Card.Title className="">
                                         {task.name}
                                         <Badge pill bg={
                                             task.status === 'Completed' ? 'success' :
