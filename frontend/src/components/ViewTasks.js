@@ -60,7 +60,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
     };
 
     return (
-        <div className='mh-100 '>
+        <div className='mh-100 d-flex justify-content-center align-items-center'>
         <Container className="mt-4 vh-100">
             <h2 className="mb-4 text-center"><FaTasks /> View Tasks</h2>
             {message && <Alert variant="danger"><BsExclamationTriangle /> {message}</Alert>}
@@ -87,7 +87,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
                         <Col key={task.id} md={4} className="mb-3">
                             <Card className="shadow-sm border-0">
                                 <Card.Body>
-                                    <Card.Title className="">
+                                    <Card.Title className="d-flex justify-content-between align-items-center">
                                         {task.name}
                                         <Badge pill bg={
                                             task.status === 'Completed' ? 'success' :
