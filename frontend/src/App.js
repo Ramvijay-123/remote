@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import { Container, Navbar, Nav, Button, Alert } from 'react-bootstrap';
@@ -17,6 +16,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Footer from './components/Footer';
 import InfoPage from './components/InfoPage';
+import Info from './components/Info';
 
 const App = () => {
     const [token, setToken] = useState(localStorage.getItem('token') || '');
@@ -56,7 +56,7 @@ const App = () => {
             <div className='parent mh-100 vw-100'>
                 <Navbar variant="secondary" className="custom-navbar  shadow p-3 mb-3 rounded text-muted border border-light  d-flex justify-content-center bg-zinc-800 app-navbar ">
                     <Container className='app-navbar'>
-                        <Navbar.Brand as={Link} to="/" className='font-weight-bold ' style={{ fontSize: '1.5rem', color: '#000' }}>RemoteTeam</Navbar.Brand>
+                        <Navbar.Brand as={Link} to="/" className='font-weight-bold ' style={{ fontSize: '1.5rem', color: '#000', fontWeight: 800 }}>RemoteTeam</Navbar.Brand>
                         <Nav className="me-auto">
                             {token ? (
                                 <>
@@ -68,7 +68,7 @@ const App = () => {
                                 </>
                             ) : (
                                 <>
-                                    <Nav.Link as={Link} to="/">Home</Nav.Link>
+                                    <Nav.Link as={Link} to="/" style={{ fontWeight: 600,fontSize:'1.2rem'}} >Home</Nav.Link>
                                 </>
                             )}
                         </Nav>
@@ -111,11 +111,16 @@ const App = () => {
                                     </ul>
                                 </Alert>
                                 </div>
-                               <InfoPage></InfoPage>
+                               {/* <InfoPage></InfoPage> */}
+                               <Info/>
                                 <Footer/>
                             </div>
                         ) : (
+                            <div>
                             <Home />
+                            <Info/>
+                            <Footer/>
+                            </div>
                            
                         )} />
                         

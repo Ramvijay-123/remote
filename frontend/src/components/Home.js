@@ -17,7 +17,7 @@ const Home = () => {
                 currentText += fullText[index];
                 setDisplayedText(currentText);
                 index++;
-                setTimeout(type, 200); // Adjust typing speed here
+                setTimeout(type, 80); // Adjust typing speed here
             }
         };
 
@@ -26,17 +26,17 @@ const Home = () => {
     }, []);
 
     return (
-        <div className='vh-100'>
+        <div className=''>
         <Container className="mt-5">
             <Row className="text-center">
                 <Col>
-                    <h1 style={{ fontSize: '2.5rem', color: '#000' }}>
+                    <h1 style={{ fontSize: '2.5rem', color: '#fff', fontFamily: '"Bungee Tint", sans-serif' }}>
                         {displayedText}
                     </h1>
-                    <p className="lead" style={{ fontSize: '1.2rem', color: '#343a40'}}>
+                    <p className="lead" style={{ fontSize: '1.4rem', color: '#fff' ,fontFamily: "'Baskervville SC', serif", fontWeight: 200}}>
                         Manage projects, assign tasks, and view your tasks efficiently on this platform.
                     </p>
-                    <p className="mb-4" style={{ fontSize: '1rem', color: '#343a40'}}>
+                    <p className="mb-4" style={{ fontSize: '1.3rem', color: '#fff', fontFamily: "'Baskervville SC', serif", fontWeight: 200}}>
                         To get started, please register or log in to access the full features of the application.
                     </p>
                     <div className="mt-4">
@@ -44,8 +44,8 @@ const Home = () => {
                             variant=""
                             as={Link}
                             to="/register"
-                            className='btn btn-warning'
-                            style={{ marginRight: '10px', backgroundColor: '', borderColor: '#000', color:'#000' }}
+                            className='btn btn-outline-primary'
+                            style={{ marginRight: '10px', backgroundColor: '', color:'#fff' }}
                         >
                             Register
                         </Button>
@@ -54,7 +54,7 @@ const Home = () => {
                             className='btn btn-outline-warning'
                             as={Link}
                             to="/login"
-                            style={{ color: '#000' }}
+                            style={{ color: '#fff' }}
                         >
                             Login
                         </Button>

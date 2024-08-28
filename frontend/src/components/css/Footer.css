@@ -1,6 +1,6 @@
 .footer {
     background-color: #343a40; 
-    color: #ffffff;
+    color: grey;
     border-top: 1px solid #495057; 
     background-color: #997cdc;
 }
@@ -27,7 +27,7 @@
 
 .footer-links a {
     text-decoration: none;
-    color: #ffffff;
+    color: grey;
     font-weight: 500;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .footer-social a {
-    color: #ffffff;
+    color: grey;
 }
 
 .footer-social a:hover {

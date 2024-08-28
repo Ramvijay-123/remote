@@ -6,8 +6,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import '../App.css'; // Import the CSS file
-
+import '../App.css'; 
 const CreateProject = ({ token, userId }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -79,7 +78,6 @@ const CreateProject = ({ token, userId }) => {
                                         Create Project
                                     </Button>
                                 </Form>
-                                { /* Toast container to display notifications */ }
                                 <ToastContainer />
                             </Card.Body>
                         </Card>
