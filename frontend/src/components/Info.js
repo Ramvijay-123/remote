@@ -51,7 +51,9 @@ const Info = () => {
                     </Col>
                 ))}
             </Row>
-            <Row className="mt-5 text-center">
+            <Row className="mt-5 w-50 
+              mb-5 d-flex justify-content-center  m-auto
+            ">
                 <Col>
                     <img 
                         src={flowchart} 

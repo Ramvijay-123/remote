@@ -25,6 +25,7 @@ const Dashboard = ({ token, userId }) => {
                 setUserDetails(user);
             } catch (error) {
                 console.error('Error fetching data:', error);
+                
             } finally {
                 setLoading(false);
             }
@@ -60,38 +61,43 @@ const Dashboard = ({ token, userId }) => {
                         <div className="card-body text-center">
                             <FaTasks size={40} className="text-primary mb-3" />
                             <h5 className="card-title">Task Overview</h5>
-                            <div className="pie-chart-container">
-                                <Pie 
-                                    data={pieData} 
-                                    options={{ 
-                                        responsive: true, 
-                                        plugins: { 
-                                            legend: { position: 'top' }, 
-                                            tooltip: { 
-                                                callbacks: { 
-                                                    label: (context) => `${context.label}: ${context.raw}` 
-                                                } 
-                                            } 
-                                        } 
-                                    }} 
-                                />
-                            </div>
+                            {
+                              totalTasks==0?
+                              <h1 className='text-warning'>No Task Assign</h1>: <div className="pie-chart-container">
+                              <Pie 
+                                  data={pieData} 
+                                  options={{ 
+                                      responsive: true, 
+                                      plugins: { 
+                                          legend: { position: 'top' }, 
+                                          tooltip: { 
+                                              callbacks: { 
+                                                  label: (context) => `${context.label}: ${context.raw}` 
+                                              } 
+                                          } 
+                                      } 
+                                  }} 
+                              />
+                          </div>
+                            }
                             <p className="mt-3">Total Tasks: {totalTasks}</p>
                         </div>
                     </div>
                 </div>
                 <div className="col-md-6">
                     <div className="card shadow-lg mb-4">
-                        <div className="card-body">
-                            <div className="d-flex align-items-center mb-4">
-                                <FaProjectDiagram size={30} className="text-success me-3" />
-                                <h5 className="card-title mb-0">Project Count</h5>
-                            </div>
-                            <p className="card-text">Number of Projects: {projectCount}</p>
+                        <div className="card-body m-auto 
+                        d-flex flex-column">
+                           
                             <div className="d-flex align-items-center mb-4">
                                 <FaUser size={30} className="text-info me-3" />
-                                <h5 className="card-title mb-0">User Details</h5>
+                                <h3 className="card-title mb-0">User Details</h3>
                             </div>
+                            <div className="d-flex align-items-center mb-4">
+                                <FaProjectDiagram size={20} className="text-success me-3" />
+                                <h2 className="card-title mb-0">Project Count:
+                           {projectCount}</h2>
+                           </div>
                             <div className="d-flex align-items-center mb-3">
                                 <Avatar name={userDetails.name} size="50" round className="me-3" />
                                 <div>

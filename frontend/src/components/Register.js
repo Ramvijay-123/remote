@@ -54,10 +54,10 @@ const Register = ({ setToken, setUserId }) => {
                     <h2 className="text-center mb-2 mt-2">Register</h2>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
-                            <Form.Label><FaUser className="me-2" />Name</Form.Label>
+                            <Form.Label><FaUser className="me-2" />Username</Form.Label>
                             <Form.Control 
                                 type="text" 
-                                placeholder="Enter your name" 
+                                placeholder="Enter your username" 
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 
                                 required 

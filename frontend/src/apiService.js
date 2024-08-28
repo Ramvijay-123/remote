@@ -7,7 +7,7 @@ export const registerUser = async (userDetails) => {
         const response = await axios.post(`${API_BASE_URL}/auth/addNewUser`, userDetails);
         return response.data;
     } catch (error) {
-        console.error('Error registering user:', error);
+        console.error('Username already exit', error);
         throw error;
     }
 };
@@ -29,6 +29,7 @@ export const createProject = async (project, token) => {
         });
         return response.data;
     } catch (error) {
+        console.log(token);
         console.error('Error creating project:', error);
         throw error;
     }
@@ -81,8 +82,6 @@ export const getTasksByProject = async (projectId, token) => {
         throw error;
     }
 };
-
-// Search functions
 export const searchUsers = async (name, token) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/auth/searchUsers`, {

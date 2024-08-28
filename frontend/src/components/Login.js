@@ -43,10 +43,10 @@ const Login = ({ setToken, setUserId, showToast }) => {
                     <h2 className="text-center mb-4">Login</h2>
                     <Form onSubmit={handleSubmit}>
                         <Form.Group className="mb-3">
-                            <Form.Label><FaEnvelope className="me-2" />Email</Form.Label>
+                            <Form.Label><FaEnvelope className="me-2" />Username</Form.Label>
                             <Form.Control 
                                 type="text" 
-                                placeholder="Enter your email" 
+                                placeholder="Enter your username" 
                                 value={email} 
                                 onChange={(e) => setEmail(e.target.value)} 
                                 required 
