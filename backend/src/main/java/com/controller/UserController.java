@@ -19,7 +19,7 @@ import com.repository.UserInfoRepository;
 import com.service.JwtService;
 import com.service.UserInfoService;
 @RestController
-@CrossOrigin(origins = "https://remote-theta.vercel.app")
+@CrossOrigin(origins = {"https://remote-theta.vercel.app", "http://localhost:3000"})
 @RequestMapping("/auth")
 public class UserController {
     @Autowired
