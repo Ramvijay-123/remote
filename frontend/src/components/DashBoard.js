@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Pie } from 'react-chartjs-2';
 import { Chart as ChartJS, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import { FaTasks, FaProjectDiagram, FaUser } from 'react-icons/fa'; // Importing icons
-import Avatar from 'react-avatar'; // Importing avatar component
+import { FaTasks, FaProjectDiagram, FaUser } from 'react-icons/fa'; 
+import Avatar from 'react-avatar'; 
 import { getTaskCounts, getProjectCount, getUserDetails } from '../apiService';
-import axios from 'axios'; // Ensure axios is imported
+import axios from 'axios'; 
 import './css/AssignTask.css'
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -55,7 +55,6 @@ const Dashboard = ({ token, userId }) => {
         <div className="container mt-5">
             <h2 className="text-center mb-4">Dashboard</h2>
             <div className="row">
-                {/* Task Overview Card */}
                 <div className="col-md-6">
                     <div className="card shadow-lg mb-4">
                         <div className="card-body text-center">
@@ -81,7 +80,6 @@ const Dashboard = ({ token, userId }) => {
                         </div>
                     </div>
                 </div>
-                {/* Project Count and User Details Card */}
                 <div className="col-md-6">
                     <div className="card shadow-lg mb-4">
                         <div className="card-body">

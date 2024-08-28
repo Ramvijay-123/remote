@@ -3,7 +3,7 @@ import { assignTask, searchUsers, searchProjects } from '../apiService';
 import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
 import { FaTasks, FaRegEdit, FaCalendarAlt, FaUser, FaProjectDiagram } from 'react-icons/fa';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import the styles
+import 'react-quill/dist/quill.snow.css'; 
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,7 +21,6 @@ const AssignTask = ({ token }) => {
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
 
-    // Search functions
     const searchForUsers = async (query) => {
         if (query) {
             try {
@@ -132,8 +131,8 @@ const AssignTask = ({ token }) => {
                                     onBlur={() => setTimeout(() => setShowUserDropdown(false), 200)}
                                 />
                                 {showUserDropdown && userResults.length > 0 && (
-                                    <ListGroup className="position-absolute w-100 mt-2 bg-white border border-secondary rounded shadow-sm">
-                                        {userResults.map(user => (
+                                    <ListGroup className="dropdown-menu">
+                                        {userResults.slice(0, 5).map(user => (
                                             <ListGroup.Item 
                                                 key={user.id} 
                                                 action 
@@ -159,8 +158,8 @@ const AssignTask = ({ token }) => {
                                     onBlur={() => setTimeout(() => setShowProjectDropdown(false), 200)}
                                 />
                                 {showProjectDropdown && projectResults.length > 0 && (
-                                    <ListGroup className="position-absolute w-100 mt-2 bg-white border border-secondary rounded shadow-sm">
-                                        {projectResults.map(project => (
+                                    <ListGroup className="dropdown-menu">
+                                        {projectResults.slice(0, 5).map(project => (
                                             <ListGroup.Item 
                                                 key={project.id} 
                                                 action 
@@ -178,7 +177,6 @@ const AssignTask = ({ token }) => {
                             Assign Task
                         </Button>
                     </Form>
-                    { /* Toast container to display notifications */ }
                     <ToastContainer />
                 </Col>
             </Row>
