@@ -2,7 +2,8 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaProjectDiagram, FaTasks, FaCheckCircle, FaEye } from 'react-icons/fa';
 import './css/Features.css'; 
-import flowchart from '../../src/components/image/blank.png'
+import flowchart from '../../src/components/image/blank.png';
+
 const features = [
     {
         title: 'Create and Manage Projects',
@@ -51,10 +52,9 @@ const Info = () => {
                     </Col>
                 ))}
             </Row>
-            <Row className="mt-5 w-50 
-              mb-5 d-flex justify-content-center  m-auto
-            ">
-                <Col>
+            <Row className="mt-5 mb-5 d-flex justify-content-center">
+                <Col className="text-center">
+                    <h1 className="mb-4" style={{ fontWeight: 'bold' }}>WorkFlow</h1>
                     <img 
                         src={flowchart} 
                         alt="Feature Illustration" 
