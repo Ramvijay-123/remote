@@ -7,6 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../App.css'; 
+import Footer from './Footer';
 const CreateProject = ({ token, userId }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -23,6 +24,7 @@ const CreateProject = ({ token, userId }) => {
     };
 
     return (
+        <div>
         <div className="custom-bg">
             <Container className="mt-2 pt-10 text-white">
                 <Row className="justify-content-center">
@@ -84,6 +86,8 @@ const CreateProject = ({ token, userId }) => {
                     </Col>
                 </Row>
             </Container>
+            </div>
+            <Footer/>
         </div>
     );
 };
