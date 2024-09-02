@@ -19,9 +19,22 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.filter.JwtAuthFilter;
 import com.service.UserInfoService;
 
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+ @SecurityRequirement(name = "bearerAuth")
+ @SecurityScheme(
+    name = "bearerAuth",
+    scheme = "bearer",
+    bearerFormat = "JWT", 
+    type = SecuritySchemeType.HTTP, 
+    in = SecuritySchemeIn.HEADER
+)
 public class SecurityConfig {
     @Autowired
     private JwtAuthFilter authFilter;
@@ -34,7 +47,9 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            		 .requestMatchers("/auth/**").permitAll()
+            		 .requestMatchers("/auth/**","/v3/api-docs/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html").permitAll()
                      .requestMatchers("/projects/**").hasAuthority("ROLE_MANAGER")
                      .requestMatchers("/tasks/assign").hasAuthority("ROLE_MANAGER")
                      .requestMatchers("/tasks/user/**").hasAuthority("ROLE_MANAGER")
@@ -59,6 +74,7 @@ public class SecurityConfig {
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
+    
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
