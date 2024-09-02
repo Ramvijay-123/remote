@@ -2,10 +2,6 @@ html,body{
   overflow-x: hidden;;
   background-color:#997cdc ;
 }
-.container{
-  max-width: 100% ;
-  margin:0;
-}
 .App {
   text-align: center;
   font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
