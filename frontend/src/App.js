@@ -94,7 +94,7 @@ const App = () => {
                     </Container>
                 </Navbar>
 
-                <Container className="mt-1 parent wh-100 d-flex justify-content-center ">
+                <Container className=" parent  d-flex justify-content-center ">
                     <Routes>
                         <Route path="/" element={token ? (
                             <div >
@@ -111,7 +111,6 @@ const App = () => {
                                     </ul>
                                 </Alert>
                                 </div>
-                               {/* <InfoPage></InfoPage> */}
                                <Info/>
                                 <Footer/>
                             </div>

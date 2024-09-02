@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Alert, ListGroup, Button, Badge, Dropdown } 
 import { BsCalendar, BsClock, BsExclamationTriangle, BsCheckCircle, BsPencil } from 'react-icons/bs';
 import { FaTasks } from 'react-icons/fa';
 import ReactPaginate from 'react-paginate';
+import Footer from './Footer';
 
 const ViewTasks = ({ token, userId, projectId }) => {
     const [tasks, setTasks] = useState([]);
@@ -200,6 +201,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
 </div>
 
             </Container>
+            <Footer/>
         </div>
     );
 };
