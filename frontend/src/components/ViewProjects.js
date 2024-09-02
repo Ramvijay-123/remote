@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { getProjectsByManager } from '../apiService';
+import { getProjectsByManager, getTasksByProjectPageable } from '../apiService';
 import { Table, Container, Spinner, Alert, Button, Row, Col, Card } from 'react-bootstrap';
+import ReactPaginate from 'react-paginate';
 
 const ViewProjects = ({ token, userId }) => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [showTasksForProject, setShowTasksForProject] = useState(null);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const response = await getProjectsByManager(userId, token);
-                setProjects(response);
+                const response = await getTasksByProjectPageable(userId, token, page);
+                setProjects(response.content);
+                setTotalPages(response.totalPages);
             } catch (error) {
                 setError('Failed to load projects');
             } finally {
@@ -21,7 +25,11 @@ const ViewProjects = ({ token, userId }) => {
         };
 
         fetchProjects();
-    }, [userId, token]);
+    }, [userId, token, page]);
+
+    const handlePageClick = (event) => {
+        setPage(event.selected);
+    };
 
     const handleProjectClick = (projectId) => {
         setShowTasksForProject(showTasksForProject === projectId ? null : projectId);
@@ -36,10 +44,6 @@ const ViewProjects = ({ token, userId }) => {
         padding: '16px',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
         transition: 'box-shadow 0.3s ease'
-    };
-
-    const cardHoverStyle = {
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)'
     };
 
     const iconStyle = {
@@ -60,43 +64,68 @@ const ViewProjects = ({ token, userId }) => {
             )}
             
             {showTasksForProject === null ? (
-                <Table striped bordered hover responsive="md">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {projects.map((project) => (
-                            <tr key={project.id}>
-                                <td>{project.id}</td>
-                                <td>{project.name}</td>
-                                <td>
-                                    <div className="project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
-                                </td>
-                                <td>
-                                    <Button 
-                                        variant={showTasksForProject === project.id ? 'danger' : 'warning'} 
-                                        onClick={() => handleProjectClick(project.id)}
-                                    >
-                                        {showTasksForProject === project.id ? (
-                                            <>
-                                                <i className="bi bi-eye-slash" style={iconStyle}></i> Hide Tasks
-                                            </>
-                                        ) : (
-                                            <>
-                                                <i className="bi bi-eye" style={iconStyle}></i> View Tasks
-                                            </>
-                                        )}
-                                    </Button>
-                                </td>
+                <>
+                    <Table striped bordered hover responsive="md">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Actions</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                        </thead>
+                        <tbody>
+                            {projects.map((project) => (
+                                <tr key={project.id}>
+                                    <td>{project.id}</td>
+                                    <td>{project.name}</td>
+                                    <td>
+                                        <div className="project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
+                                    </td>
+                                    <td>
+                                        <Button 
+                                            variant={showTasksForProject === project.id ? 'danger' : 'warning'} 
+                                            onClick={() => handleProjectClick(project.id)}
+                                        >
+                                            {showTasksForProject === project.id ? (
+                                                <>
+                                                    <i className="bi bi-eye-slash" style={iconStyle}></i> Hide Tasks
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <i className="bi bi-eye" style={iconStyle}></i> View Tasks
+                                                </>
+                                            )}
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+
+                    {/* Pagination Controls */}
+                    <div className="d-flex justify-content-center mt-4">
+                        <ReactPaginate
+                            previousLabel={'Previous'}
+                            nextLabel={'Next'}
+                            breakLabel={'...'}
+                            pageCount={totalPages}
+                            marginPagesDisplayed={2}
+                            pageRangeDisplayed={5}
+                            onPageChange={handlePageClick}
+                            containerClassName={'pagination'}
+                            pageClassName={'page-item'}
+                            pageLinkClassName={'page-link'}
+                            previousClassName={'page-item'}
+                            previousLinkClassName={'page-link'}
+                            nextClassName={'page-item'}
+                            nextLinkClassName={'page-link'}
+                            breakClassName={'page-item'}
+                            breakLinkClassName={'page-link'}
+                            activeClassName={'active'}
+                        />
+                    </div>
+                </>
             ) : (
                 <div>
                     {projects.find(project => project.id === showTasksForProject)?.tasks.length > 0 ? (

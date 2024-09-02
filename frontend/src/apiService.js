@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://remote-3.onrender.com';
+const API_BASE_URL = 'http://localhost:9000';
 
 export const registerUser = async (userDetails) => {
     try {
@@ -107,8 +107,6 @@ export const searchProjects = async (name, token) => {
         throw error;
     }
 };
-
-// Functions for counts and details
 export const getTaskCounts = async (token, userId) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/tasks/user/${userId}`, {
@@ -117,10 +115,41 @@ export const getTaskCounts = async (token, userId) => {
         const tasks = response.data;
         const completeCount = tasks.filter(task => task.status === 'Complete').length;
         const incompleteCount = tasks.filter(task => task.status === 'Incomplete').length;
+        const pending = tasks.filter(task => task.status === 'Pending').length;
         return {
             complete: completeCount,
-            incomplete: incompleteCount
+            incomplete: incompleteCount,
+            pending:pending
         };
+    } catch (error) {
+        console.error('Error fetching task counts:', error);
+        throw error;
+    }
+};
+export const getTaskOfOneYear = async (token, userId) => {
+    try {
+        const response = await axios.get(`${API_BASE_URL}/tasks/user/${userId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const tasks = response.data;
+        const currentDate = new Date();
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+        const taskCountsByMonth = Array.from({ length: 12 }, () => ({ total: 0, complete: 0 }));
+
+        tasks.forEach(task => {
+            const dueDate = new Date(task.dueDate);
+            if (dueDate >= oneYearAgo ) {
+                const monthIndex = dueDate.getMonth();
+                taskCountsByMonth[monthIndex].total++;
+                if (task.status === 'Complete') {
+                    taskCountsByMonth[monthIndex].complete++;
+                }
+            }
+        });
+
+        return taskCountsByMonth;
     } catch (error) {
         console.error('Error fetching task counts:', error);
         throw error;
@@ -149,4 +178,44 @@ export const getUserDetails = async (token, userId) => {
         console.error('Error fetching user details:', error);
         throw error;
     }
+};
+export const getTasksByUserPageable = async (userId, token, page = 0, size = 6, sort = 'dueDate', direction = 'asc') => {
+    const response = await fetch(`${API_BASE_URL}/tasks/user/${userId}/paged?pageno=${page}&pagesize=${size}&sort=${sort}&direction=${direction}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response.json();
+};
+export const getTasksByProjectPageable= async (projectId, token, page = 0, size = 6, sort = 'name', direction = 'asc') => {
+    const response = await fetch(`${API_BASE_URL}/projects/manager/${projectId}/paged?pageno=${page}&pagesize=${size}&sort=${sort}&direction=${direction}`, {
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return response.json();
+};
+
+export const deleteProject = (projectId, token) => {
+    return axios.delete(`${API_BASE_URL}/delete/${projectId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+};
+
+export const updateProject = (project, token) => {
+    return axios.post(`${API_BASE_URL}/update`, project, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+};
+
+export const deleteTask = (taskId, token) => {
+    return axios.delete(`${API_BASE_URL}/tasks/delete/${taskId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
+};
+
+export const updateTask = (task, token) => {
+    return axios.post(`${API_BASE_URL}/tasks/update`, task, {
+        headers: { Authorization: `Bearer ${token}` }
+    });
 };

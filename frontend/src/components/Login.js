@@ -64,7 +64,7 @@ const Login = ({ setToken, setUserId, showToast }) => {
                                 className="form-control-lg"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-4">{loading===false?"Login":<Spinner></Spinner>}</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-4 btn-warning">{loading===false?"Login":<Spinner></Spinner>}</Button>
                     </Form>
                     {message && (
                         <Alert variant={message.includes('failed') ? 'danger' : 'success'} className="mt-3">

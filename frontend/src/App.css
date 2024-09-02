@@ -83,3 +83,42 @@ html,body{
   background-color: #007bff;
   border-color: #007bff;
 }
+/* styles.css or in your <style> block */
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+  border-radius: 0.1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem;
+}
+
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.page-item {
+  border-radius: 0.25rem;
+}
+
+.page-link {
+  border-radius: 0.25rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  color: #0e1012;
+  background-color: #ffffff;
+  border: 1px solid #dee2e6;
+}
+
+.page-link:hover {
+  color: #000000;
+  background-color: #e9ecef;
+  border-color: #ddd;
+}
+
+.active .page-link {
+  background-color: #80ff67;
+  color: #ffffff;
+  border-color: #5aff68;
+}

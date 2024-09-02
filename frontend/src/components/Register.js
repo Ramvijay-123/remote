@@ -97,7 +97,7 @@ const Register = ({ setToken, setUserId }) => {
                                 <option value="ROLE_MANAGER">Manager</option>
                             </Form.Select>
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-3 mt-2">{loading===false?"Register":<Spinner></Spinner>}</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-3 mt-2 btn-warning">{loading===false?"Register":<Spinner></Spinner>}</Button>
                     </Form>
                     <ToastContainer/>
                 </Col>

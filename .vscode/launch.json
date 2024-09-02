@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-RemoteTeamApplication<RemoteTeam>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.RemoteTeamApplication",
+            "projectName": "RemoteTeam",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
