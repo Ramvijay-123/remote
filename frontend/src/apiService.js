@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:9000';
+const API_BASE_URL = 'https://remote-3.onrender.com/';
 
 export const registerUser = async (userDetails) => {
     try {
