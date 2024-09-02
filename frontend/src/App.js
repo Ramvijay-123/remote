@@ -94,7 +94,7 @@ const App = () => {
                     </Container>
                 </Navbar>
 
-                <Container className=" parent  d-flex justify-content-center ">
+                <div className=" parent  d-flex justify-content-center ">
                     <Routes>
                         <Route path="/" element={token ? (
                             <div >
@@ -131,7 +131,7 @@ const App = () => {
                         <Route path="/view-projects" element={token ? <ViewProjects token={token} userId={userId} /> : <Navigate to="/login" />} />
                         <Route path="/dashboard" element={token ? <Dashboard token={token} userId={userId} /> : <Navigate to="/login" />} />
                     </Routes>
-                </Container>
+                </div>
               
             </div>
             <ToastContainer />
