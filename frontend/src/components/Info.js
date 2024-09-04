@@ -58,7 +58,7 @@ const Info = () => {
                     <img 
                         src={flowchart} 
                         alt="Feature Illustration" 
-                        className="img-fluid rounded"
+                        className="img-fluid rounded w-50"
                         style={{ backgroundColor: '#997cdc'}}
                     />
                 </Col>
