@@ -63,9 +63,9 @@ public class TaskController {
     public List<Task> getTasksByProject(@PathVariable int projectId) {
         return taskService.findByProjectId(projectId);
     }
-@PostMapping("/update/user")
-@PreAuthorize("hasRole('USER')")
+@PostMapping("/user/update")
 public ResponseEntity<Task> updateUser(@RequestBody Task task) {
+    System.out.println(task);
     return taskService.updateUser(task);
 }
 @PostMapping("/user/update/manager")
@@ -73,9 +73,5 @@ public ResponseEntity<Task> updateUser(@RequestBody Task task) {
 public ResponseEntity<Task> updateManager(@RequestBody Task task) {
     return taskService.update(task);
 }
-
-    
-
-    
 }
 

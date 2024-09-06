@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { getTasksByUserPageable, getTasksByProjectPageable } from '../apiService';
 import { Container, Row, Col, Card, Alert, ListGroup, Button, Badge, Dropdown } from 'react-bootstrap';
 import { BsCalendar, BsClock, BsExclamationTriangle, BsCheckCircle, BsPencil } from 'react-icons/bs';
-import { FaTasks } from 'react-icons/fa';
+import { FaEdit, FaTasks } from 'react-icons/fa';
 import ReactPaginate from 'react-paginate';
 import Footer from './Footer';
+import EditTaskModal from './EditTaskModal';
 
 const ViewTasks = ({ token, userId, projectId }) => {
     const [tasks, setTasks] = useState([]);
     const [filteredTasks, setFilteredTasks] = useState([]);
-    const [expandedTaskIds, setExpandedTaskIds] = useState([]); 
+    const [expandedTaskIds, setExpandedTaskIds] = useState([]);
     const [message, setMessage] = useState('');
     const [filter, setFilter] = useState('all');
     const [page, setPage] = useState(0);
@@ -17,7 +18,8 @@ const ViewTasks = ({ token, userId, projectId }) => {
     const [size, setSize] = useState(6);
     const [sort, setSort] = useState('dueDate');
     const [direction, setDirection] = useState('asc');
-
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [currentTask, setCurrentTask] = useState(null);
     useEffect(() => {
         const fetchTasks = async () => {
             try {
@@ -37,7 +39,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
                 });
 
                 setTasks(updatedTasks);
-                setTotalPages(response.totalPages); // Set total pages for pagination
+                setTotalPages(response.totalPages);
             } catch (error) {
                 setMessage('Failed to fetch tasks');
             }
@@ -78,52 +80,58 @@ const ViewTasks = ({ token, userId, projectId }) => {
         setDirection(newDirection);
     };
 
+    const handleEditClick = (task) => {
+        setCurrentTask(task); 
+        setShowEditModal(true); 
+    };
+    const handleSaveTask = (updatedTask) => {
+        setTasks(prevTasks =>
+            prevTasks.map(task => (task.id === updatedTask.id ? updatedTask : task))
+        );
+    };
     return (
         <div className='mt-1 parent wh-100 container'>
             <Container className="mt-4 vh-auto">
                 <h2 className="mb-4 text-center"><FaTasks /> View Tasks</h2>
                 {message && <Alert variant="danger"><BsExclamationTriangle /> {message}</Alert>}
-
+               
                 <div className='d-flex justify-content-around'>
-                <Dropdown className="mb-4 d-flex justify-content-center">
-                    <Dropdown.Toggle variant="warning" id="filter-dropdown">
-                        {filter === 'all' ? 'All Tasks' : 
-                         filter === 'pending' ? 'Pending Tasks' :
-                         filter === 'incomplete' ? 'Incomplete Tasks' :
-                         filter === 'completed' ? 'Completed Tasks' : 'Filter Tasks'}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => setFilter('all')}>All Tasks</Dropdown.Item>
-                        <Dropdown.Item onClick={() => setFilter('pending')}>Pending Tasks</Dropdown.Item>
-                        <Dropdown.Item onClick={() => setFilter('incomplete')}>Incomplete Tasks</Dropdown.Item>
-                        <Dropdown.Item onClick={() => setFilter('completed')}>Completed Tasks</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                    <Dropdown className="mb-4 d-flex justify-content-center">
+                        <Dropdown.Toggle variant="warning" id="filter-dropdown">
+                            {filter === 'all' ? 'All Tasks' : 
+                             filter === 'pending' ? 'Pending Tasks' :
+                             filter === 'incomplete' ? 'Incomplete Tasks' :
+                             filter === 'completed' ? 'Completed Tasks' : 'Filter Tasks'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => setFilter('all')}>All Tasks</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setFilter('pending')}>Pending Tasks</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setFilter('incomplete')}>Incomplete Tasks</Dropdown.Item>
+                            <Dropdown.Item onClick={() => setFilter('completed')}>Completed Tasks</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
 
-                {/* Sorting Dropdown */}
-                <Dropdown className="mb-4 d-flex justify-content-center">
-                    <Dropdown.Toggle variant="warning" id="sort-dropdown">
-                        {sort === 'dueDate' ? 'Sort by Due Date' : 'Sort by Name'}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleSortChange('dueDate')}>Sort by Due Date</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleSortChange('name')}>Sort by Name</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                    <Dropdown className="mb-4 d-flex justify-content-center">
+                        <Dropdown.Toggle variant="warning" id="sort-dropdown">
+                            {sort === 'dueDate' ? 'Sort by Due Date' : 'Sort by Name'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleSortChange('dueDate')}>Sort by Due Date</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleSortChange('name')}>Sort by Name</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
 
-                {/* Sorting Direction Dropdown */}
-                <Dropdown className="mb-4 d-flex justify-content-center">
-                    <Dropdown.Toggle variant="warning" id="direction-dropdown">
-                        {direction === 'asc' ? 'Ascending' : 'Descending'}
-                    </Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        <Dropdown.Item onClick={() => handleDirectionChange('asc')}>Ascending</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleDirectionChange('desc')}>Descending</Dropdown.Item>
-                    </Dropdown.Menu>
-                </Dropdown>
+                    <Dropdown className="mb-4 d-flex justify-content-center">
+                        <Dropdown.Toggle variant="warning" id="direction-dropdown">
+                            {direction === 'asc' ? 'Ascending' : 'Descending'}
+                        </Dropdown.Toggle>
+                        <Dropdown.Menu>
+                            <Dropdown.Item onClick={() => handleDirectionChange('asc')}>Ascending</Dropdown.Item>
+                            <Dropdown.Item onClick={() => handleDirectionChange('desc')}>Descending</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
                 </div>
               
-
                 <Row>
                     {filteredTasks.length > 0 ? (
                         filteredTasks.map(task => (
@@ -160,11 +168,18 @@ const ViewTasks = ({ token, userId, projectId }) => {
                                             </ListGroup.Item>
                                         </ListGroup>
                                         <Button 
-                                            variant={expandedTaskIds.includes(task.id) ? 'secondary' : 'primary'} 
+                                            variant={expandedTaskIds.includes(task.id) ? 'warning' : 'info'} 
                                             className="mt-3 w-100" 
                                             onClick={() => toggleExpand(task.id)}
                                         >
                                             {expandedTaskIds.includes(task.id) ? 'Hide Details' : 'View Details'}
+                                        </Button>
+                                        <Button 
+                                            variant="outline-info" 
+                                            className="mt-2 w-100" 
+                                            onClick={() => handleEditClick(task)}
+                                        >
+                                           <FaEdit />
                                         </Button>
                                     </Card.Body>
                                 </Card>
@@ -176,32 +191,37 @@ const ViewTasks = ({ token, userId, projectId }) => {
                         </Col>
                     )}
                 </Row>
-
-                {/* Pagination Controls */}
                 <div className="pagination-container">
-    <ReactPaginate
-        previousLabel={'Previous'}
-        nextLabel={'Next'}
-        breakLabel={'...'}
-        pageCount={totalPages}
-        marginPagesDisplayed={2}
-        pageRangeDisplayed={5}
-        onPageChange={handlePageChange}
-        containerClassName={'pagination'}
-        pageClassName={'page-item'}
-        pageLinkClassName={'page-link'}
-        previousClassName={'page-item'}
-        previousLinkClassName={'page-link'}
-        nextClassName={'page-item'}
-        nextLinkClassName={'page-link'}
-        breakClassName={'page-item'}
-        breakLinkClassName={'page-link'}
-        activeClassName={'active'}
-    />
-</div>
-
+                    <ReactPaginate
+                        previousLabel={'Previous'}
+                        nextLabel={'Next'}
+                        breakLabel={'...'}
+                        pageCount={totalPages}
+                        marginPagesDisplayed={2}
+                        pageRangeDisplayed={5}
+                        onPageChange={handlePageChange}
+                        containerClassName={'pagination'}
+                        pageClassName={'page-item'}
+                        pageLinkClassName={'page-link'}
+                        previousClassName={'page-item'}
+                        previousLinkClassName={'page-link'}
+                        nextClassName={'page-item'}
+                        nextLinkClassName={'page-link'}
+                        breakClassName={'page-item'}
+                        breakLinkClassName={'page-link'}
+                        activeClassName={'active'}
+                    />
+                </div>
+                <EditTaskModal
+                    show={showEditModal}
+                    handleClose={() => setShowEditModal(false)}
+                    task={currentTask}
+                    token={token}
+                    onSave={handleSaveTask}
+                    handleSave={handleSaveTask}
+                />
             </Container>
-            <Footer/>
+            <Footer />
         </div>
     );
 };
