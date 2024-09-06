@@ -64,7 +64,7 @@ const EditTaskModal = ({ task, show, handleClose, handleSave, token }) => {
                             <option value="">Select Status</option>
                             <option value="Pending">Pending</option>
                             <option value="Incomplete">Incomplete</option>
-                            <option value="Completed">Completed</option>
+                            <option value="Complete">Completed</option>
                         </Form.Control>
                     </Form.Group>
                 </Form>
