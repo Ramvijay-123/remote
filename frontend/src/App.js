@@ -54,7 +54,7 @@ const App = () => {
     return (
         <Router>
             <div className='parent mh-100 vw-100'>
-                <Navbar variant="secondary" className="custom-navbar  shadow p-3 mb-3 rounded text-muted border border-light  d-flex justify-content-center bg-zinc-800 app-navbar ">
+                <Navbar variant="secondary" className="custom-navbar my-navbar shadow p-3 mb-3 rounded text-muted border border-light  d-flex justify-content-center bg-zinc-800 app-navbar ">
                     <Container className='app-navbar'>
                         <Navbar.Brand as={Link} to="/" className='font-weight-bold ' style={{ fontSize: '1.5rem', color: '#000', fontWeight: 800 }}>RemoteTeam</Navbar.Brand>
                         <Nav className="me-auto">
@@ -116,7 +116,7 @@ const App = () => {
                             </div>
                         ) : (
                             <div>
-                            <Home />
+                            <Home setToken={setToken} setUserId={setUserId} />
                             <Info/>
                             <Footer/>
                             </div>
