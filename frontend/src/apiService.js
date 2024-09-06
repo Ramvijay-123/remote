@@ -199,8 +199,6 @@ export const getTasksByProjectPageable= async (projectId, token, page = 0, size 
     });
     return response.json();
 };
-
-
 export const updateTask = async (task, token) => {
     try {
         const response = await fetch(`${API_BASE_URL}/tasks/user/update`, {
