@@ -11,7 +11,6 @@ const CustomCalendar = ({dateArray}) => {
     const tileClassName = ({ date, view }) => {
         if (view === 'month') {
             if (date.getMonth() === currentMonth && date.getFullYear() === currentYear) {
-                console.log(dateArray);
                 if(dateArray[date.getDate()-1] === "Complete")
                 {
                     return "Complete";

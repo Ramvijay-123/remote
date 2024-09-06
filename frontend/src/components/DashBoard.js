@@ -48,12 +48,10 @@ const Dashboard = ({ token, userId}) => {
                 const tasks = await getTaskCounts(token, userId);
                 const { complete, incomplete, pending } = tasks;
                 setTaskCounts({ complete, incomplete, pending });
-
                 const response = await getTaskOfOneYear(token, userId);
                 const taskCountsByMonth=response.taskCountsByMonth;
-                setDateArray(response.currentMonthDays);
-                setTaskCountsByMonth(taskCountsByMonth);
-
+                setDateArray(response.dateArray);
+                setTaskCountsByMonth(response.taskCountsByMonth);
                 const totalTasks = taskCountsByMonth.map(monthData => monthData.total);
                 const completedTasks = taskCountsByMonth.map(monthData => monthData.complete);
                 const ratios = totalTasks.map((total, index) => total === 0 ? 0 : (completedTasks[index] / total) * 100);
