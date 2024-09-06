@@ -126,7 +126,6 @@ export const getTaskCounts = async (token, userId) => {
         throw error;
     }
 };
-
 export const getTaskOfOneYear = async (token, userId) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/tasks/user/${userId}`, {
@@ -135,35 +134,32 @@ export const getTaskOfOneYear = async (token, userId) => {
         const tasks = response.data;
         const currentDate = new Date();
         const oneYearAgo = new Date();
+
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
         const taskCountsByMonth = Array.from({ length: 12 }, () => ({ total: 0, complete: 0 }));
-        const dateArray = Array.from({ length: 31 }, () => "");
+        const dateArray = Array.from({ length:31 }, () => "");
         tasks.forEach(task => {
             const dueDate = new Date(task.dueDate);
-            if (dueDate >= oneYearAgo && dueDate <= currentDate) {
-                const monthsAgo = (currentDate.getFullYear() - dueDate.getFullYear()) * 12 + (currentDate.getMonth() - dueDate.getMonth());
-                const monthIndex = 11 - monthsAgo;
-                if (monthIndex >= 0 && monthIndex < 12) {
-                    taskCountsByMonth[monthIndex].total++;
-                    if (task.status === 'Complete') {
-                        taskCountsByMonth[monthIndex].complete++;
-                    }
+            if (dueDate >= oneYearAgo ) {
+                const monthIndex = dueDate.getMonth();
+                taskCountsByMonth[monthIndex].total++;
+                if (task.status === 'Complete') {
+                    taskCountsByMonth[monthIndex].complete++;
                 }
             }
             if(dueDate.getMonth()===currentDate.getMonth())
             {
-              dateArray[dueDate.getDate()-1]=task.status;
+                dateArray[dueDate.getDate()-1]=task.status
             }
         });
-     return {
-        taskCountsByMonth,dateArray
-     }
+
+        return {taskCountsByMonth,dateArray};
     } catch (error) {
         console.error('Error fetching task counts:', error);
         throw error;
     }
 };
-
 
 export const getProjectCount = async (token, userId) => {
     try {
