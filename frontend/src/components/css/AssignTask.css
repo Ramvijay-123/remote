@@ -13,7 +13,11 @@
     flex-direction: column;
 }
 
-
+.dashboard1{
+    font-size: small;
+    font-family: Arial, Helvetica, sans-serif;
+    margin-top: -20px;
+}
 .dropdown-menu {
     max-height: 200px; 
     overflow-y: hidden;
@@ -46,7 +50,22 @@
     border-bottom: none;
 }
 .pie-chart-container {
-    width: 300px; 
-    height: 300px; 
+    width: 250px; 
+    height: 250px; 
     margin: 0 auto; 
 }
+.my-navbar {
+    display:none !important;
+}
+.tile-pending {
+    background-color: #ffcc00; 
+}
+
+.tile-complete {
+    background-color: #4caf50; 
+}
+.react-calendar{
+    background-color:rgb(36 36 68) !important;
+   color: #ced4da !important;
+}
+

@@ -5,7 +5,11 @@ import { FaTasks, FaProjectDiagram, FaUser, FaHome, FaChartPie, FaCog } from 're
 import Avatar from 'react-avatar';
 import { getTaskCounts, getProjectCount, getUserDetails, getTaskOfOneYear } from '../apiService';
 import { Sparklines, SparklinesLine } from 'react-sparklines';
+import { Link } from 'react-router-dom';
+import Calendar from 'react-calendar'; 
+import 'react-calendar/dist/Calendar.css'; 
 import './css/AssignTask.css';
+import CustomCalendar from './CustomCalender';
 
 ChartJS.register(Title, Tooltip, Legend, ArcElement);
 
@@ -28,22 +32,26 @@ const SparkLineChart = ({ data }) => (
     </div>
 );
 
-const Dashboard = ({ token, userId }) => {
+const Dashboard = ({ token, userId}) => {
     const [taskCounts, setTaskCounts] = useState({ complete: 0, incomplete: 0, pending: 0 });
     const [projectCount, setProjectCount] = useState(0);
     const [userDetails, setUserDetails] = useState({});
     const [taskCountsByMonth, setTaskCountsByMonth] = useState([]);
     const [ratios, setRatios] = useState(Array(12).fill(0));
     const [loading, setLoading] = useState(true);
-
+    const [date, setDate] = useState(new Date()); 
+    const [dateArray,setDateArray]=useState(Array(12).fill(0));
     useEffect(() => {
+
         const fetchData = async () => {
             try {
                 const tasks = await getTaskCounts(token, userId);
                 const { complete, incomplete, pending } = tasks;
                 setTaskCounts({ complete, incomplete, pending });
 
-                const taskCountsByMonth = await getTaskOfOneYear(token, userId);
+                const response = await getTaskOfOneYear(token, userId);
+                const taskCountsByMonth=response.taskCountsByMonth;
+                setDateArray(response.currentMonthDays);
                 setTaskCountsByMonth(taskCountsByMonth);
 
                 const totalTasks = taskCountsByMonth.map(monthData => monthData.total);
@@ -69,7 +77,7 @@ const Dashboard = ({ token, userId }) => {
     if (loading) {
         return <p className="text-center">Loading...</p>;
     }
-
+   
     const totalTasks = taskCounts.complete + taskCounts.incomplete + taskCounts.pending;
     const pieData = {
         labels: ['Completed Tasks', 'Incomplete Tasks', 'Pending'],
@@ -85,8 +93,7 @@ const Dashboard = ({ token, userId }) => {
     };
 
     return (
-        <div className="d-flex vh-100 dashboard1 " style={{ backgroundColor: '#151536' }}>
-          
+        <div className="d-flex vh-auto dashboard1 text-sm" style={{ backgroundColor: '#151536' }}>
             <div className="bg-dark text-white p-3" style={{ width: '250px' }}>
                 <div className="d-flex flex-column align-items-center">
                     <Avatar name={userDetails.name} size="100" round className="mb-3" />
@@ -95,26 +102,25 @@ const Dashboard = ({ token, userId }) => {
                 </div>
                 <hr className="my-4" />
                 <nav className="nav flex-column">
-                    <a href="#" className="nav-link text-white">
-                        <FaHome className="me-2" /> Home
-                    </a>
-                    <a href="#" className="nav-link text-white">
-                        <FaTasks className="me-2" /> Tasks
-                    </a>
-                    <a href="#" className="nav-link text-white">
-                        <FaProjectDiagram className="me-2" /> Projects
-                    </a>
-                    <a href="#" className="nav-link text-white">
-                        <FaChartPie className="me-2" /> Analytics
-                    </a>
-                    <a href="#" className="nav-link text-white">
-                        <FaCog className="me-2" /> Settings
-                    </a>
-                </nav>
+            <Link to="/" className="nav-link text-white">
+                <FaHome className="me-2" /> Home
+            </Link>
+            <Link to="/view-tasks" className="nav-link text-white">
+                <FaTasks className="me-2" /> Tasks
+            </Link>
+            <Link to="/view-projects" className="nav-link text-white">
+                <FaProjectDiagram className="me-2" /> Projects
+            </Link>
+            <Link to="/analytics" className="nav-link text-white">
+                <FaChartPie className="me-2" /> Chats
+            </Link>
+            <Link to="/settings" className="nav-link text-white">
+                <FaCog className="me-2" /> Settings
+            </Link>
+        </nav>
             </div>
 
             <div className="container-fluid p-4">
-                <h2 className="text-center mb-4 text-white">Dashboard</h2>
                 <div className="row">
                     <div className="col-md-6">
                         <div className="card mb-4 border-0">
@@ -144,44 +150,28 @@ const Dashboard = ({ token, userId }) => {
                             </div>
                         </div>
                     </div>
+                   
                     <div className="col-md-2">
                         <div className="card mb-3 text-white" style={{background:'rgb(36 36 68)'}}>
                             <div className="card-body d-flex flex-column align-items-center">
                                 <div className="d-flex align-items-center mb-4">
                                     <FaProjectDiagram size={20} className="text-success me-3" />
-                                    <h3 className="card-title mb-0">Project Count</h3>
+                                    <h4 className="card-title mb-0">Project Count</h4>
                                 </div>
                                 <div className="d-flex align-items-center mb-4">
                                     <h2 className="card-title mb-0">{projectCount}</h2>
                                 </div>
                             </div>
                         </div>
+                        </div>
+                        <div className="w-auto">
+                        <div className="card border-0 text-white" style={{background:'rgb(36 36 68)'}}>
+                            <div className="card-body">
+                              
+                             <CustomCalendar dateArray={dateArray}/>
+                            </div>
+                   
                     </div>
-                    <div className="col-md-2">
-                        <div className="card mb-3 text-white" style={{background:'rgb(36 36 68)'}}>
-                            <div className="card-body d-flex flex-column align-items-center">
-                                <div className="d-flex align-items-center mb-4">
-                                    <FaProjectDiagram size={20} className="text-success me-3" />
-                                    <h3 className="card-title mb-0">Project Count</h3>
-                                </div>
-                                <div className="d-flex align-items-center mb-4">
-                                    <h2 className="card-title mb-0">{projectCount}</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-2">
-                        <div className="card mb-3 text-white" style={{background:'rgb(36 36 68)'}}>
-                            <div className="card-body d-flex flex-column align-items-center">
-                                <div className="d-flex align-items-center mb-4">
-                                    <FaProjectDiagram size={20} className="text-success me-3" />
-                                    <h3 className="card-title mb-0">Project Count</h3>
-                                </div>
-                                <div className="d-flex align-items-center mb-4">
-                                    <h2 className="card-title mb-0">{projectCount}</h2>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div className="md-6 d-flex ">
                         <div className="card d-flex w-50 mb-4 me-2 bg-transparent text-white">

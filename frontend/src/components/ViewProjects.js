@@ -97,6 +97,9 @@ const ViewProjects = ({ token, userId }) => {
                                                 </>
                                             )}
                                         </Button>
+                                        <Button className='bg-danger ml-4'>
+                                         delete
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}

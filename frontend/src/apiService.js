@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'https://remote-3.onrender.com';
+const API_BASE_URL = '';
 
 export const registerUser = async (userDetails) => {
     try {
@@ -21,7 +21,6 @@ export const loginUser = async (credentials) => {
         throw error;
     }
 };
-
 export const createProject = async (project, token) => {
     try {
         const response = await axios.post(`${API_BASE_URL}/projects/create`, project, {
@@ -137,6 +136,7 @@ export const getTaskOfOneYear = async (token, userId) => {
         oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
         const taskCountsByMonth = Array.from({ length: 12 }, () => ({ total: 0, complete: 0 }));
+        const currentMonthDays = Array.from({ length:31 }, () => "");
 
         tasks.forEach(task => {
             const dueDate = new Date(task.dueDate);
@@ -147,14 +147,18 @@ export const getTaskOfOneYear = async (token, userId) => {
                     taskCountsByMonth[monthIndex].complete++;
                 }
             }
+            if(dueDate.getMonth() === currentDate.getMonth()) {
+                currentMonthDays[dueDate.getDate() - 1] = task.status;
+            }
         });
 
-        return taskCountsByMonth;
+        return { taskCountsByMonth, currentMonthDays };
     } catch (error) {
         console.error('Error fetching task counts:', error);
         throw error;
     }
 };
+
 
 export const getProjectCount = async (token, userId) => {
     try {

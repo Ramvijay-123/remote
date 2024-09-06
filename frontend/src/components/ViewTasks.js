@@ -80,7 +80,7 @@ const ViewTasks = ({ token, userId, projectId }) => {
 
     return (
         <div className='mt-1 parent wh-100 container'>
-            <Container className="mt-4 vh-100">
+            <Container className="mt-4 vh-auto">
                 <h2 className="mb-4 text-center"><FaTasks /> View Tasks</h2>
                 {message && <Alert variant="danger"><BsExclamationTriangle /> {message}</Alert>}
 

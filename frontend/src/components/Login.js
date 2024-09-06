@@ -4,7 +4,7 @@ import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { loginUser } from '../apiService';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import { Link } from 'react-router-dom';
 const Login = ({ setToken, setUserId, showToast }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -64,7 +64,13 @@ const Login = ({ setToken, setUserId, showToast }) => {
                                 className="form-control-lg"
                             />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-4 btn-warning">{loading===false?"Login":<Spinner></Spinner>}</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-1 btn-warning">{loading===false?"Login":<Spinner></Spinner>}</Button>
+                        <div className='mb-1'>
+                        <Link to="/register" className="create-account-link align-text-left text-decoration-none text-info ">
+    create account
+</Link>
+                        </div>
+            
                     </Form>
                     {message && (
                         <Alert variant={message.includes('failed') ? 'danger' : 'success'} className="mt-3">

@@ -4,6 +4,7 @@ import { FaUser, FaEnvelope, FaLock } from 'react-icons/fa';
 import { registerUser, loginUser } from '../apiService';
 import { toast, ToastContainer } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import {Link } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = ({ setToken, setUserId }) => {
@@ -13,6 +14,7 @@ const Register = ({ setToken, setUserId }) => {
     const [roles, setRoles] = useState('ROLE_USER');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -97,7 +99,10 @@ const Register = ({ setToken, setUserId }) => {
                                 <option value="ROLE_MANAGER">Manager</option>
                             </Form.Select>
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-3 mt-2 btn-warning">{loading===false?"Register":<Spinner></Spinner>}</Button>
+                        <Button variant="primary" type="submit" className="w-100 btn-lg mb-1 mt-2 btn-warning">{loading===false?"Register":<Spinner></Spinner>}</Button>
+                        <Link to="/login" className="create-account-link align-text-left text-decoration-none text-info">
+    Login
+</Link>
                     </Form>
                     <ToastContainer/>
                 </Col>

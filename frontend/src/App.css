@@ -116,8 +116,48 @@ html,body{
   border-color: #ddd;
 }
 
-.active .page-link {
-  background-color: #80ff67;
-  color: #ffffff;
-  border-color: #5aff68;
+
+.Complete {
+  
+  background-color:#0bff5c !important;
+  color: #ffffff !important; 
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2rem;
+}
+
+.Complete::before {
+  content: "✅"; 
+  font-size: 1.2rem;
+}
+
+.pending {
+  background-color: #fc6c38 !important; 
+  color:#f8f8f8 !important; 
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2rem;
+}
+
+.pending::before {
+  content: "🕒";
+  font-size: 1.2rem;
+}
+
+.free {
+  background-color: #ffffff !important;
+  color: #d419e2; 
+  border-radius: 50%;
+  text-align: center;
+  line-height: 2rem;
+}
+
+.free::before {
+  content: "🍀";
+  font-size: 1.2rem;
+}
+
+
+.displaynone{
+  visibility: hidden;
 }
