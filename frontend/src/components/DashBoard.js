@@ -83,7 +83,7 @@ const Dashboard = ({ token, userId}) => {
             {
                 label: 'Tasks',
                 data: [taskCounts.complete, taskCounts.incomplete, taskCounts.pending],
-                backgroundColor: ['#36A2EB', '#FF6384', '#FFCE56'],
+                backgroundColor: ['#0bff5c', ' #f82828 ', '#ff9e7b'],
                 borderWidth: 1,
                 hoverOffset: 4
             }

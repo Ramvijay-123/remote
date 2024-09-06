@@ -128,11 +128,11 @@ html,body{
 
 .Complete::before {
   content: "✅"; 
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 }
 
 .pending {
-  background-color: #fc6c38 !important; 
+  background-color: #ff9e7b !important; 
   color:#f8f8f8 !important; 
   border-radius: 50%;
   text-align: center;
@@ -144,6 +144,18 @@ html,body{
   font-size: 1.2rem;
 }
 
+.incomplete {
+  background-color: #f82828 !important; 
+  color: #ff0000;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 3rem;
+}
+
+.incomplete::before {
+  content: "⚠️" ; 
+  font-size: 1.4rem;
+}
 .free {
   background-color: #ffffff !important;
   color: #d419e2; 
