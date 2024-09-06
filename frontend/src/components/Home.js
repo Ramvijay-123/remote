@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Button, Row, Col } from 'react-bootstrap';
+import { Container, Button, Row, Col, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginUser } from '../apiService'; 
 
-const Home = ({setToken, setUserId}) => {
+const Home = ({ setToken, setUserId }) => {
     const [displayedText, setDisplayedText] = useState('');
+    const [isLoading, setIsLoading] = useState(false); 
     const fullText = "Welcome to the Project Management App";
     const navigate = useNavigate(); 
+
     useEffect(() => {
         let currentText = '';
         let index = 0;
@@ -27,20 +29,22 @@ const Home = ({setToken, setUserId}) => {
     }, []);
 
     const handlesubmit = async () => { 
+        setIsLoading(true);
         try {
-                const loginResponse = await loginUser({ username: "Crazy", password: "crazy12345" }); 
-                toast.success('Registration successful! Logging in...');
-                if (loginResponse) {
-                    setToken(loginResponse.token);
-                    setUserId(loginResponse.user_id);
-                    console.log(loginResponse);
-                    navigate('/'); 
-                } else {
-                    toast.error('Login failed: No token received');
-                }
-            
+            const loginResponse = await loginUser({ username: "Crazy", password: "crazy12345" }); 
+            if (loginResponse) {
+                setToken(loginResponse.token);
+                setUserId(loginResponse.user_id);
+                console.log(loginResponse);
+                navigate('/'); 
+                toast.success('Login successful! Redirecting...');
+            } else {
+                toast.error('Login failed: No token received');
+            }
         } catch (error) {
-            toast.error('Registration failed');
+            toast.error('Login failed');
+        } finally {
+            setIsLoading(false); 
         }
     };
 
@@ -64,7 +68,7 @@ const Home = ({setToken, setUserId}) => {
                                 as={Link}
                                 to="/register"
                                 className='btn btn-outline-primary'
-                                style={{ marginRight: '10px', backgroundColor: '', color: '#fff' }}
+                                style={{ marginRight: '10px', color: '#fff' }}
                             >
                                 Register
                             </Button>
@@ -82,8 +86,13 @@ const Home = ({setToken, setUserId}) => {
                                 className='btn btn-info'
                                 onClick={handlesubmit}
                                 style={{ marginLeft: '10px' }}
+                                disabled={isLoading} 
                             >
-                                Guest
+                                {isLoading ? (
+                                    <Spinner animation="border" size="lg" /> 
+                                ) : (
+                                    'Guest'
+                                )}
                             </Button>
                         </div>
                     </Col>
