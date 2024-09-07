@@ -216,3 +216,45 @@ export const updateTask = async (task, token) => {
         throw error;
     }
 };
+export const updateProject = async (project, token) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/projects/update`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify(project),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to update project');
+        }
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        return "Error occurred";
+    }
+};
+
+export const deleteProject = async (projectId, token) => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/projects/delete/${projectId.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete Project');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error("Error while deleting project:", error);
+        return "Error occurred while deleting project";
+    }
+};
