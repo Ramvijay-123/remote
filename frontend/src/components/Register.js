@@ -17,29 +17,44 @@ const Register = ({ setToken, setUserId }) => {
 
     const navigate = useNavigate();
 
-    const validateEmail = (email) => {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    const validatePassword = (password) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
+
+    const validateName = (name) => name.length >= 3;
+
+    const handleNameChange = (e) => {
+        const value = e.target.value;
+        setName(value);
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            name: validateName(value) ? '' : 'Username must be at least 3 characters long',
+        }));
     };
 
-    const validatePassword = (password) => {
-        return /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/.test(password);
+    const handleEmailChange = (e) => {
+        const value = e.target.value;
+        setEmail(value);
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            email: validateEmail(value) ? '' : 'Please enter a valid email address',
+        }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const value = e.target.value;
+        setPassword(value);
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            password: validatePassword(value) ? '' : 'Password must be at least 6 characters long and contain both letters and numbers',
+        }));
     };
 
     const validateForm = () => {
-        let formErrors = {};
-
-        if (!name || name.length < 3) {
-            formErrors.name = 'Username must be at least 3 characters long';
-        }
-
-        if (!email || !validateEmail(email)) {
-            formErrors.email = 'Please enter a valid email address';
-        }
-
-        if (!password || !validatePassword(password)) {
-            formErrors.password = 'Password must be at least 6 characters long and contain both letters and numbers';
-        }
-
+        const formErrors = {};
+        if (!validateName(name)) formErrors.name = 'Username must be at least 3 characters long';
+        if (!validateEmail(email)) formErrors.email = 'Please enter a valid email address';
+        if (!validatePassword(password)) formErrors.password = 'Password must be at least 6 characters long and contain both letters and numbers';
         setErrors(formErrors);
         return Object.keys(formErrors).length === 0;
     };
@@ -54,42 +69,25 @@ const Register = ({ setToken, setUserId }) => {
         try {
             setLoading(true);
             const response = await registerUser({ name, email, password, roles });
-            if (response != null) {
+            if (response) {
                 const loginResponse = await loginUser({ username: name, password });
                 toast.success('Registration successful! Logging in...');
                 if (loginResponse) {
                     setToken(loginResponse.token);
                     setUserId(loginResponse.user_id);
-                    setLoading(false);
                     navigate('/');
                 } else {
                     toast.error('Login failed: No token received');
-                    setLoading(false);
                 }
             } else {
                 toast.error(response.message || 'Registration failed');
-                setLoading(false);
             }
         } catch (error) {
             console.error('Registration error:', error);
             toast.error('Registration failed');
+        } finally {
             setLoading(false);
         }
-    };
-
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-        validateForm();
-    };
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        validateForm();
-    };
-
-    const handlePasswordChange = (e) => {
-        setPassword(e.target.value);
-        validateForm();
     };
 
     return (
@@ -147,7 +145,7 @@ const Register = ({ setToken, setUserId }) => {
                                 </Form.Control.Feedback>
                             </Form.Group>
 
-                            <Form.Group className="mb-3 ">
+                            <Form.Group className="mb-3">
                                 <Form.Label>Role</Form.Label>
                                 <Form.Select 
                                     value={roles} 
@@ -160,7 +158,7 @@ const Register = ({ setToken, setUserId }) => {
                             </Form.Group>
 
                             <Button variant="primary" type="submit" className="w-100 btn-lg mb-1 mt-2 btn-warning">
-                                {loading === false ? "Register" : <Spinner animation="border" size="sm" />}
+                                {loading ? <Spinner animation="border" size="sm" /> : "Register"}
                             </Button>
 
                             <Link to="/login" className="create-account-link align-text-left text-decoration-none text-info">

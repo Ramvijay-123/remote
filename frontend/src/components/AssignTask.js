@@ -82,9 +82,9 @@ const AssignTask = ({ token }) => {
     };
 
     return (
-        <Container className="mt-5">
+        <Container className="mt-2">
             <Row className="justify-content-center">
-                <Col md={6} className="shadow-lg p-4 parent1">
+                <Col md={4} className="shadow-lg p-4 parent1 no-shadow">
                     <div className="text-center mb-4">
                         <h2>Assign Task</h2>
                     </div>
@@ -97,6 +97,7 @@ const AssignTask = ({ token }) => {
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 
                                 required 
+                                 className='no-shadow'
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
@@ -117,6 +118,7 @@ const AssignTask = ({ token }) => {
                                 value={dueDate} 
                                 onChange={(e) => setDueDate(e.target.value)} 
                                 required 
+                                className='no-shadow'
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
@@ -125,6 +127,7 @@ const AssignTask = ({ token }) => {
                                 <Form.Control 
                                     type="text" 
                                     placeholder="Search User" 
+                                     className='no-shadow'
                                     value={userSearch} 
                                     onChange={(e) => setUserSearch(e.target.value)} 
                                     onFocus={() => setShowUserDropdown(true)}
@@ -138,6 +141,7 @@ const AssignTask = ({ token }) => {
                                                 action 
                                                 onClick={() => handleUserSelect(user)}
                                                 className="cursor-pointer"
+                    
                                             >
                                                 {user.name}
                                             </ListGroup.Item>
@@ -154,6 +158,7 @@ const AssignTask = ({ token }) => {
                                     placeholder="Search Project" 
                                     value={projectSearch} 
                                     onChange={(e) => setProjectSearch(e.target.value)} 
+                                     className='no-shadow'
                                     onFocus={() => setShowProjectDropdown(true)}
                                     onBlur={() => setTimeout(() => setShowProjectDropdown(false), 200)}
                                 />

@@ -28,7 +28,7 @@ const CreateProject = ({ token, userId }) => {
         <div className="custom-bg">
             <Container className="mt-2 pt-10 text-white">
                 <Row className="justify-content-center">
-                    <Col md={8} lg={6}>
+                    <Col md={4} >
                         <Card className="shadow-lg">
                             <Card.Body className='parent1'>
                                 <div className="text-center mb-4">
@@ -44,7 +44,7 @@ const CreateProject = ({ token, userId }) => {
                                             value={name} 
                                             onChange={(e) => setName(e.target.value)} 
                                             required 
-                                            className="form-control-lg"
+                                            className="form-control-lg no-shadow"
                                             style={{ borderRadius: '0.25rem', boxShadow: '0 0 0 0.2rem rgba(0, 123, 255, 0.25)' }}
                                         />
                                     </Form.Group>
