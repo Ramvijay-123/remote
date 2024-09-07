@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { getProjectsByManager, getTasksByProjectPageable } from '../apiService';
-import { Table, Container, Spinner, Alert, Button, Row, Col, Card } from 'react-bootstrap';
+import { getProjectsByManager, getTasksByProjectPageable, deleteProject } from '../apiService';
+import { Table, Container, Spinner, Alert, Button, Row, Col, Card, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
+import EditProjectModal from './EditProjectModal';
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css';
+import { MdDelete } from "react-icons/md";
+import { FaEdit } from "react-icons/fa";
+import { IoEye } from "react-icons/io5";
+import { IoEyeOff } from "react-icons/io5";
 
 const ViewProjects = ({ token, userId }) => {
     const [projects, setProjects] = useState([]);
@@ -10,6 +17,8 @@ const ViewProjects = ({ token, userId }) => {
     const [showTasksForProject, setShowTasksForProject] = useState(null);
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [editProjectModalVisible, setEditProjectModalVisible] = useState(false); 
+    const [projectToEdit, setProjectToEdit] = useState(null); 
 
     useEffect(() => {
         const fetchProjects = async () => {
@@ -35,8 +44,29 @@ const ViewProjects = ({ token, userId }) => {
         setShowTasksForProject(showTasksForProject === projectId ? null : projectId);
     };
 
-    if (loading) return <Spinner animation="border" />;
-    if (error) return <Alert variant="danger">{error}</Alert>;
+    const handleEditClick = (project) => {
+        setProjectToEdit(project);
+        setEditProjectModalVisible(true);
+    };
+
+    const handleDeleteClick = async (project) => {
+        try {
+            await deleteProject(project, token);
+            setProjects(projects.filter(proj => proj.id !== project.id));
+            toast.success('Project deleted successfully!');
+        } catch (error) {
+            setError('Failed to delete project');
+            toast.error('Failed to delete project!');
+        }
+    };
+
+    const handleSaveEditedProject = (updatedProject) => {
+        const updatedProjects = projects.map((proj) =>
+            proj.id === updatedProject.id ? updatedProject : proj
+        );
+        setProjects(updatedProjects);
+        toast.success('Project edited successfully!');
+    };
 
     const cardStyle = {
         backgroundColor: '#f8f9fa',
@@ -47,11 +77,25 @@ const ViewProjects = ({ token, userId }) => {
     };
 
     const iconStyle = {
-        marginRight: '8px'
+        marginRight: '8px',
+        color: 'black' 
     };
+    const iconStyle1 = {
+        marginRight: '8px',
+        color: 'red' 
+    };
+    const iconStyle2 = {
+        marginRight: '8px',
+        color: 'blue' 
+    };
+    
+
+    if (loading) return <Spinner animation="border" />;
+    if (error) return <Alert variant="danger">{error}</Alert>;
 
     return (
         <Container className="mt-4 vh-100">
+            <ToastContainer /> 
             <h2 className="mb-4 text-bold">My Projects</h2>
             {showTasksForProject !== null && (
                 <Button
@@ -62,7 +106,7 @@ const ViewProjects = ({ token, userId }) => {
                     <i className="bi bi-arrow-left-circle" style={iconStyle}></i> Back to Projects
                 </Button>
             )}
-            
+
             {showTasksForProject === null ? (
                 <>
                     <Table striped bordered hover responsive="md">
@@ -83,30 +127,57 @@ const ViewProjects = ({ token, userId }) => {
                                         <div className="project-description" dangerouslySetInnerHTML={{ __html: project.description }} />
                                     </td>
                                     <td>
-                                        <Button 
-                                            variant={showTasksForProject === project.id ? 'danger' : 'warning'} 
-                                            onClick={() => handleProjectClick(project.id)}
+                                        <OverlayTrigger
+                                            placement="top"
+                                            overlay={<Tooltip>View/Hide Tasks</Tooltip>}
                                         >
-                                            {showTasksForProject === project.id ? (
-                                                <>
-                                                    <i className="bi bi-eye-slash" style={iconStyle}></i> Hide Tasks
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <i className="bi bi-eye" style={iconStyle}></i> View Tasks
-                                                </>
-                                            )}
-                                        </Button>
-                                        <Button className='bg-danger ml-4'>
-                                         delete
-                                        </Button>
+                                            <Button
+                                                variant="light" 
+                                                onClick={() => handleProjectClick(project.id)}
+                                            >
+                                                {showTasksForProject === project.id ? (
+                                                    <>
+                                                        <IoEyeOff style={iconStyle}/> Hide Tasks
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <IoEye style={iconStyle}/> Show Tasks
+                                                    </>
+                                                )}
+                                            </Button>
+                                        </OverlayTrigger>
+
+                                        <OverlayTrigger
+                                            placement="top"
+                                            overlay={<Tooltip>Delete Project</Tooltip>}
+                                        >
+                                            <Button
+                                                className='mx-3'
+                                                variant="light" 
+                                                onClick={() => { handleDeleteClick(project) }}
+                                            >
+                                                <MdDelete style={iconStyle1} />
+                                            </Button>
+                                        </OverlayTrigger>
+
+                                        <OverlayTrigger
+                                            placement="top"
+                                            overlay={<Tooltip>Edit Project</Tooltip>}
+                                        >
+                                            <Button
+                                                className='mx-3'
+                                                variant="light"
+                                                onClick={() => handleEditClick(project)} 
+                                            >
+                                                <FaEdit style={iconStyle2} /> 
+                                            </Button>
+                                        </OverlayTrigger>
                                     </td>
                                 </tr>
                             ))}
                         </tbody>
                     </Table>
 
-                    {/* Pagination Controls */}
                     <div className="d-flex justify-content-center mt-4">
                         <ReactPaginate
                             previousLabel={'Previous'}
@@ -159,6 +230,16 @@ const ViewProjects = ({ token, userId }) => {
                         <p>No tasks found for this project.</p>
                     )}
                 </div>
+            )}
+
+            {editProjectModalVisible && (
+                <EditProjectModal
+                    show={editProjectModalVisible}
+                    handleClose={() => setEditProjectModalVisible(false)}
+                    handleSave={handleSaveEditedProject}
+                    project={projectToEdit}
+                    token={token}
+                />
             )}
         </Container>
     );
