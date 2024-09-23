@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createProject } from '../apiService';
-import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { FaProjectDiagram, FaRegEdit } from 'react-icons/fa';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -8,18 +8,22 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../App.css'; 
 import Footer from './Footer';
+
 const CreateProject = ({ token, userId }) => {
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [managerId, setManagerId] = useState('');
-    
+    const [loading, setLoading] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
         try {
             const response = await createProject({ name, description, manager: { id: userId } }, token);
             toast.success(`Project created: ${response.name}`);
         } catch (error) {
             toast.error('Failed to create project');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -76,8 +80,8 @@ const CreateProject = ({ token, userId }) => {
                                         />
                                     </Form.Group>
 
-                                    <Button  type="submit" className="btn-lg w-100 " style={{ borderRadius: '0.25rem',backgroundColor:'#FB6542' }}>
-                                        Create Project
+                                    <Button type="submit" className="btn-lg w-100" style={{ borderRadius: '0.25rem', backgroundColor:'#FB6542' }} disabled={loading}>
+                                        {loading ? <Spinner animation="border" size="sm" /> : 'Create Project'}
                                     </Button>
                                 </Form>
                                 <ToastContainer />
