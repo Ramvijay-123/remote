@@ -20,19 +20,16 @@ const AssignTask = ({ token }) => {
     const [projectResults, setProjectResults] = useState([]);
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
-    const [loading, setLoading] = useState(false); // Add loading state
+    const [loading, setLoading] = useState(false);
 
     const searchForUsers = async (query) => {
         if (query) {
-            setLoading(true);  // Start spinner when searching
             try {
                 const response = await searchUsers(query, token);
                 setUserResults(response);
                 setShowUserDropdown(true);
             } catch (error) {
                 console.error('Failed to search users:', error);
-            } finally {
-                setLoading(false);  // Stop spinner after search
             }
         } else {
             setUserResults([]);
@@ -42,15 +39,12 @@ const AssignTask = ({ token }) => {
 
     const searchForProjects = async (query) => {
         if (query) {
-            setLoading(true);  // Start spinner when searching
             try {
                 const response = await searchProjects(query, token);
                 setProjectResults(response);
                 setShowProjectDropdown(true);
             } catch (error) {
                 console.error('Failed to search projects:', error);
-            } finally {
-                setLoading(false);  // Stop spinner after search
             }
         } else {
             setProjectResults([]);
@@ -80,14 +74,14 @@ const AssignTask = ({ token }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);  // Start spinner when submitting task
+        setLoading(true);
         try {
             const response = await assignTask({ name, description, status, dueDate, user: { id: userId }, project: { id: projectId } }, token);
             toast.success(`Task assigned: ${response.name}`);
         } catch (error) {
             toast.error('Failed to assign task');
         } finally {
-            setLoading(false);  // Stop spinner after submission
+            setLoading(false);
         }
     };
 
@@ -143,7 +137,6 @@ const AssignTask = ({ token }) => {
                                     onFocus={() => setShowUserDropdown(true)}
                                     onBlur={() => setTimeout(() => setShowUserDropdown(false), 200)}
                                 />
-                                {loading && <Spinner animation="border" role="status" size="sm" className="ml-2" />}
                                 {showUserDropdown && userResults.length > 0 && (
                                     <ListGroup className="dropdown-menu">
                                         {userResults.slice(0, 5).map(user => (
@@ -172,7 +165,6 @@ const AssignTask = ({ token }) => {
                                     onFocus={() => setShowProjectDropdown(true)}
                                     onBlur={() => setTimeout(() => setShowProjectDropdown(false), 200)}
                                 />
-                                {loading && <Spinner animation="border" role="status" size="sm" className="ml-2" />}
                                 {showProjectDropdown && projectResults.length > 0 && (
                                     <ListGroup className="dropdown-menu">
                                         {projectResults.slice(0, 5).map(project => (
@@ -190,14 +182,7 @@ const AssignTask = ({ token }) => {
                             </div>
                         </Form.Group>
                         <Button variant="primary" type="submit" disabled={loading}>
-                            {loading ? (
-                                <>
-                                    <Spinner animation="border" role="status" size="sm" className="mr-2" />
-                                    Assigning...
-                                </>
-                            ) : (
-                                'Assign Task'
-                            )}
+                            {loading ? <Spinner animation="border" size="sm" /> : 'Assign Task'}
                         </Button>
                     </Form>
                     <ToastContainer />
