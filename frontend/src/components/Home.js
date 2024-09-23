@@ -31,7 +31,7 @@ const Home = ({ setToken, setUserId }) => {
     const handlesubmit = async () => { 
         setIsLoading(true);
         try {
-            const loginResponse = await loginUser({ username: "Crazy", password: "crazy12345" }); 
+            const loginResponse = await loginUser({ username: "crazy", password: "crazy12345" }); 
             if (loginResponse) {
                 setToken(loginResponse.token);
                 setUserId(loginResponse.user_id);
