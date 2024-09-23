@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { assignTask, searchUsers, searchProjects } from '../apiService';
-import { Form, Button, Container, Row, Col, ListGroup } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, ListGroup, Spinner } from 'react-bootstrap';
 import { FaTasks, FaRegEdit, FaCalendarAlt, FaUser, FaProjectDiagram } from 'react-icons/fa';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; 
@@ -20,15 +20,19 @@ const AssignTask = ({ token }) => {
     const [projectResults, setProjectResults] = useState([]);
     const [showUserDropdown, setShowUserDropdown] = useState(false);
     const [showProjectDropdown, setShowProjectDropdown] = useState(false);
+    const [loading, setLoading] = useState(false); // Add loading state
 
     const searchForUsers = async (query) => {
         if (query) {
+            setLoading(true);  // Start spinner when searching
             try {
                 const response = await searchUsers(query, token);
                 setUserResults(response);
                 setShowUserDropdown(true);
             } catch (error) {
                 console.error('Failed to search users:', error);
+            } finally {
+                setLoading(false);  // Stop spinner after search
             }
         } else {
             setUserResults([]);
@@ -38,12 +42,15 @@ const AssignTask = ({ token }) => {
 
     const searchForProjects = async (query) => {
         if (query) {
+            setLoading(true);  // Start spinner when searching
             try {
                 const response = await searchProjects(query, token);
                 setProjectResults(response);
                 setShowProjectDropdown(true);
             } catch (error) {
                 console.error('Failed to search projects:', error);
+            } finally {
+                setLoading(false);  // Stop spinner after search
             }
         } else {
             setProjectResults([]);
@@ -73,11 +80,14 @@ const AssignTask = ({ token }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);  // Start spinner when submitting task
         try {
             const response = await assignTask({ name, description, status, dueDate, user: { id: userId }, project: { id: projectId } }, token);
             toast.success(`Task assigned: ${response.name}`);
         } catch (error) {
             toast.error('Failed to assign task');
+        } finally {
+            setLoading(false);  // Stop spinner after submission
         }
     };
 
@@ -97,13 +107,13 @@ const AssignTask = ({ token }) => {
                                 value={name} 
                                 onChange={(e) => setName(e.target.value)} 
                                 required 
-                                 className='no-shadow'
+                                className='no-shadow'
                             />
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label><FaRegEdit /> Description</Form.Label>
                             <ReactQuill 
-                            className='bg-white'
+                                className='bg-white'
                                 value={description} 
                                 onChange={setDescription} 
                                 placeholder="Description" 
@@ -127,12 +137,13 @@ const AssignTask = ({ token }) => {
                                 <Form.Control 
                                     type="text" 
                                     placeholder="Search User" 
-                                     className='no-shadow'
+                                    className='no-shadow'
                                     value={userSearch} 
                                     onChange={(e) => setUserSearch(e.target.value)} 
                                     onFocus={() => setShowUserDropdown(true)}
                                     onBlur={() => setTimeout(() => setShowUserDropdown(false), 200)}
                                 />
+                                {loading && <Spinner animation="border" role="status" size="sm" className="ml-2" />}
                                 {showUserDropdown && userResults.length > 0 && (
                                     <ListGroup className="dropdown-menu">
                                         {userResults.slice(0, 5).map(user => (
@@ -141,7 +152,6 @@ const AssignTask = ({ token }) => {
                                                 action 
                                                 onClick={() => handleUserSelect(user)}
                                                 className="cursor-pointer"
-                    
                                             >
                                                 {user.name}
                                             </ListGroup.Item>
@@ -158,10 +168,11 @@ const AssignTask = ({ token }) => {
                                     placeholder="Search Project" 
                                     value={projectSearch} 
                                     onChange={(e) => setProjectSearch(e.target.value)} 
-                                     className='no-shadow'
+                                    className='no-shadow'
                                     onFocus={() => setShowProjectDropdown(true)}
                                     onBlur={() => setTimeout(() => setShowProjectDropdown(false), 200)}
                                 />
+                                {loading && <Spinner animation="border" role="status" size="sm" className="ml-2" />}
                                 {showProjectDropdown && projectResults.length > 0 && (
                                     <ListGroup className="dropdown-menu">
                                         {projectResults.slice(0, 5).map(project => (
@@ -178,8 +189,15 @@ const AssignTask = ({ token }) => {
                                 )}
                             </div>
                         </Form.Group>
-                        <Button variant="primary" type="submit">
-                            Assign Task
+                        <Button variant="primary" type="submit" disabled={loading}>
+                            {loading ? (
+                                <>
+                                    <Spinner animation="border" role="status" size="sm" className="mr-2" />
+                                    Assigning...
+                                </>
+                            ) : (
+                                'Assign Task'
+                            )}
                         </Button>
                     </Form>
                     <ToastContainer />
