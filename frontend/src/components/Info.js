@@ -2,28 +2,36 @@ import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
 import { FaProjectDiagram, FaTasks, FaCheckCircle, FaEye } from 'react-icons/fa';
 import './css/Features.css'; 
-import flowchart from '../../src/components/image/blank.png';
+import flowchart from '../../src/components/image/blank.png'; 
+import projectImg from '../../src/components/image/projectImg.png';  
+import taskImg from '../../src/components/image/taskImg.png';  
+import progressImg from '../../src/components/image/progressImg.png';  
+import viewImg from '../../src/components/image/viewImg.png';  
 
 const features = [
     {
         title: 'Create and Manage Projects',
         description: 'Initiate new projects, set deadlines, and manage all aspects of your projects seamlessly.',
-        icon: <FaProjectDiagram size={40} className="text-primary" />
+        icon: <FaProjectDiagram size={40} className="text-primary" />,
+        image: projectImg
     },
     {
         title: 'Assign Tasks to Users',
         description: 'Easily delegate tasks to your team members and monitor their progress.',
-        icon: <FaTasks size={40} className="text-success" />
+        icon: <FaTasks size={40} className="text-success" />,
+        image: taskImg
     },
     {
         title: 'Track the Progress of Tasks',
         description: 'Keep an eye on ongoing tasks and make sure everything stays on schedule.',
-        icon: <FaCheckCircle size={40} className="text-warning" />
+        icon: <FaCheckCircle size={40} className="text-warning" />,
+        image: progressImg
     },
     {
         title: 'View All Tasks and Project Details',
         description: 'Get a comprehensive view of all tasks and project details in one place.',
-        icon: <FaEye size={40} className="text-info" />
+        icon: <FaEye size={40} className="text-info" />,
+        image: viewImg
     }
 ];
 
@@ -41,6 +49,12 @@ const Info = () => {
                         <Card className="shadow-sm">
                             <Card.Body className="text-center">
                                 <div className="mb-3">
+                                    <img 
+                                        src={feature.image} 
+                                        alt={feature.title} 
+                                        className="img-fluid mb-2" 
+                                        style={{ maxHeight: '100px' }} 
+                                    />
                                     {feature.icon}
                                 </div>
                                 <Card.Title>{feature.title}</Card.Title>
