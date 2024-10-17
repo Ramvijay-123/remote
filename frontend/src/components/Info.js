@@ -1,6 +1,5 @@
 import React from 'react';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import { FaProjectDiagram, FaTasks, FaCheckCircle, FaEye } from 'react-icons/fa';
 import './css/Features.css'; 
 import flowchart from '../../src/components/image/blank.png'; 
 import projectImg from '../../src/components/image/projectImg.png';  
@@ -12,25 +11,21 @@ const features = [
     {
         title: 'Create and Manage Projects',
         description: 'Initiate new projects, set deadlines, and manage all aspects of your projects seamlessly.',
-        icon: <FaProjectDiagram size={40} className="text-primary" />,
         image: projectImg
     },
     {
         title: 'Assign Tasks to Users',
         description: 'Easily delegate tasks to your team members and monitor their progress.',
-        icon: <FaTasks size={40} className="text-success" />,
         image: taskImg
     },
     {
         title: 'Track the Progress of Tasks',
         description: 'Keep an eye on ongoing tasks and make sure everything stays on schedule.',
-        icon: <FaCheckCircle size={40} className="text-warning" />,
         image: progressImg
     },
     {
         title: 'View All Tasks and Project Details',
         description: 'Get a comprehensive view of all tasks and project details in one place.',
-        icon: <FaEye size={40} className="text-info" />,
         image: viewImg
     }
 ];
@@ -46,16 +41,15 @@ const Info = () => {
             <Row>
                 {features.map((feature, index) => (
                     <Col md={6} lg={3} className="mb-4" key={index}>
-                        <Card className="shadow-sm">
-                            <Card.Body className="text-center">
+                        <Card className="shadow-sm h-100">
+                            <Card.Body className="text-center d-flex flex-column align-items-center">
                                 <div className="mb-3">
                                     <img 
                                         src={feature.image} 
                                         alt={feature.title} 
                                         className="img-fluid mb-2" 
-                                        style={{ maxHeight: '100px' }} 
+                                        style={{ maxHeight: '150px', objectFit: 'cover' }} 
                                     />
-                                    {feature.icon}
                                 </div>
                                 <Card.Title>{feature.title}</Card.Title>
                                 <Card.Text>
