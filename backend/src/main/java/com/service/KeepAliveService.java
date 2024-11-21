@@ -17,7 +17,7 @@ public class KeepAliveService {
             String response = restTemplate.getForObject(URL, String.class); 
             System.out.println("System is alive");  
         } catch (Exception e) {
-            System.err.println("Error connecting to the backend: " + e.getMessage());
+            System.err.println("Error connecting to the backend: ");
         }
     }
 }
