@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 public class KeepAliveService {
-    private final String URL = "https://remote-3.onrender.com/auth/searchUsers"; 
+    private final String URL = "https://remote-x5km.onrender.com/auth/searchUsers"; 
     @Autowired
     private RestTemplate restTemplate;
 
