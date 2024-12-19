@@ -11,7 +11,7 @@ public class KeepAliveService {
     @Autowired
     private RestTemplate restTemplate;
 
-    @Scheduled(fixedRate =1000)  
+    @Scheduled(fixedRate =120*1000)  
     public void pingMyApp() {
         try {
             String response = restTemplate.getForObject(URL, String.class); 
