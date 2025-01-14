@@ -53,7 +53,7 @@ const Home = ({ setToken, setUserId }) => {
             <Container className="mt-5">
                 <Row className="text-center">
                     <Col>
-                        <h1 style={{ fontSize: '2.5rem', color: '#90da25', fontFamily: '"Bungee Tint", sans-serif' }}>
+                        <h1 style={{ fontSize: '3.5rem', color: '#fff', fontFamily: '"Bungee Tint", sans-serif' }}>
                             {displayedText}
                         </h1>
                         <p className="lead" style={{ fontSize: '1.4rem', color: '#fff', fontFamily: "'Baskervville SC', serif", fontWeight: 200 }}>
