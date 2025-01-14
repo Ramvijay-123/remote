@@ -55,10 +55,10 @@ html,body{
   color: white;
   display: flex;
   align-items: center;
-  background-color:#997cdc ;
+  background-color:#A16AE8 ;
 }
 .parent{
-  background-color:#997cdc ;
+  background-color:#A16AE8;
 
 }
 .parent1{
@@ -76,7 +76,7 @@ html,body{
 }
 
 .custom-bg .card {
-  background-color: #997cdc;
+  background-color: #A16AE8;
 }
 
 
